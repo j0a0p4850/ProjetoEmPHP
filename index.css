@@ -1,0 +1,89 @@
+/* Estilo para o cabeçalho (navbar) */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 150px;
+    z-index: 1;
+}
+
+.dropdown-content li {
+    padding: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.product-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+
+.product-card {
+    width: 30%;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.product-card img {
+    max-width: 100%;
+    width: 150px;
+    height: auto;
+    
+}
+
+.product-card h2 {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.product-card p {
+    margin-top: 10px;
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: #e44d26; 
+}
+
+
+.product-card button {
+    background-color: #e44d26; 
+    color: #fff; 
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.product-card button:hover {
+    background-color: #d1401b; 
+}
