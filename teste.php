@@ -1,227 +1,210 @@
+<?php
+session_start();
+include 'Main.php';
+$usuario = new Actions();
+
+function verificarExistencia($numSei, $id)
+{
+    foreach ($_SESSION['carrinho'] as $numSei) {
+        if ($numSei === $id) {
+            return true;
+        }
+    }
+    return false; // O elemento não foi encontrado no array
+}
+
+if (!isset($_SESSION['carrinho'])) {
+    $_SESSION['carrinho'] = array();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_SESSION['carrinho'])) {
+        if (isset($_POST['prod'])) {
+            foreach ($_POST['prod'] as $id => $qtd) {
+                $id = intval($id);
+                $qtd = intval($qtd);
+                if (!empty($qtd) || $qtd != 0) {
+                    $_SESSION['carrinho'][$id] = $qtd;
+                } else {
+                    unset($_SESSION['carrinho'][$id]);
+                }
+            }
+        }
+    }
+}
+
+
+
+if (isset($_GET['acao'])) {
+    //Adicionando
+    if ($_GET['acao'] == 'add') {
+        $id = intval($_GET['id']);
+        if (!isset($_SESSION['carrinho'][$id])) {
+            $usuario->incluirTabelaItensRequest($id, $value = 1);
+            $_SESSION['carrinho'][$id] = 1;
+
+        } else {
+            
+
+        }
+    }
+}
+
+
+
+
+
+
+
+if ($_GET['acao'] == 'del') {
+
+    $id = intval($_GET['id']);
+    $usuario = new Actions();
+    $usuario->excluirItensCarrinho($id);
+    if (isset($_SESSION['carrinho'][$id])) {
+        unset($_SESSION['carrinho'][$id]);
+    }
+}
+
+
+if ($_GET['acao'] == 'up') {
+    if (is_array($_POST['prod'])) {
+        foreach ($_POST['prod'] as $id => $qtd) {
+            $id = intval($id);
+            $qtd = intval($qtd);
+            if (!empty($qtd) || $qtd != 0) {
+                $_SESSION['carrinho'][$id] = $qtd;
+                
+            } else {
+                unset($_SESSION['carrinho'][$id]);
+            }
+        }
+    }
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>First-Tech</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+<head>
+    <title>Carrinho de Compras</title>
     <style>
-  
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-      }
-      
-      header {
-        background-color: #050505;
-        color: #fdae02;
-        padding: 20px;
-        text-align: center;
-      }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-      
-      
-      h1 {
-        margin: 0;
-        font-size: 36px;
-        text-transform: uppercase;
-        width: 100%;
-      }
-      
-      section {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-        max-width: 1200px; 
-      }
-      
-      article {
-        background-color: #f1f1f1;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-        margin: 10px;
-        padding: 20px;
-        text-align: center;
-        width: calc(33.3% - 20px); 
-        /*display: flex;*/
-      }
-      
-      article h2 {
-        margin-top: 0;
-        font-size: 24px;
-        text-transform: uppercase;
-      }
-      
-      article p {
-        font-size: 18px;
-        line-height: 1.5;
-      }
-      
-      article a {
-        background-color: #ffae00;
-        color: #141414;
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        text-decoration: none;
-        text-transform: uppercase;
-        transition: background-color 0.3s ease;
-      }
-      
-      article a:hover {
-        background-color: #fcfffb;
-      }
-      
-      footer {
-        background-color: #030303;
-        color: #ffae00;
-        padding: 40px;
-        text-align: center;
-        width: 100%;  
-        font-size: 30px;
-        justify-content: center;
-      }
+        .product {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-      button {
-      background-color: #ffae00;
-      color: rgb(19, 18, 18);
-      padding: 32px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      /*width: 100%;*/
-      display: block;
-      font-size: 15px;
-      text-align: right;
-      float: right;
-      margin-top: 20px;
-      /*width: 50px;
-      height: 30px; */   
-      }
-  
-      button:hover {
-      background-color: #faf7f7;     
-      }
+        .add-to-cart-button {
+            margin-left: auto;
+        }
 
-      header {
-      background-color: #0c0c0c;
-      padding: 20px;
-      text-align: left;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    input[type="text"] {
-      padding: 8px;
-      font-size: 16px;
-    }
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-    input[type="submit"] {
-      padding: 10px 30px;
-      font-size: 16px;
-      background-color: #ffd000;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .cart-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 16px;
-}
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            font-size: 20px;
 
-.cart-button a {
-  text-decoration: none;
-  color: #ffd000;
-}
+        }
 
-.cart-button i {
-  margin-right: 5px;
-}
+        .clear-cart-button {
+            background-color: goldenrod;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
 
-.signup-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.signup-button a {
-  text-decoration: none;
-  color: #ffd000;
-}
-
-.signup-button i {
-  margin-right: 5px;
-}
-
-
-      
+        .clear-cart-button:hover {
+            background-color: blue;
+            color: white;
+            opacity: 40%;
+            transition: 0.8s;
+        }
     </style>
-  </head>
-  <button class="signup-button">
-      <a href="cadastro.php">
-      <i class="fas fa-user-plus"></i> 
-    </a>
-  </button>
-  
-  <button class="cart-button">
-      <a href="carrinho.php">
-      <i class="fas fa-shopping-cart"></i>
-    </a>
-  </button>
-  
-  <body>
-      
-    <header>     
-      <h1>First-Tech</h1>
-      <form id="search-form" method="post">
-         <input type="text" id="search-bar" placeholder="Pesquisar" name="nome">
-      <input type="submit" value="Buscar">
-      <div>
-          <br>
-      <?php
-           include 'Main.php';
-           $usuario = new Actions();
-           if($_SERVER["REQUEST_METHOD"]=="POST"){
-            $nome = $_POST['nome'];
-           
-            
-            $usuario->buscarNomeProduto($nome);
-           
-            
-           }
-           
-        ?>
-      </div>
-     
-      </form>
-     
-        
-    </header>
-      
-      
-           
+</head>
 
-    <section>     
-      <article>
-           <?php
-           
-        $usuario = new Actions();
-        $usuario -> buscar();
-           
-        ?>
-       
-              </article>
-        </section> 
-        <footer> <p> O MELHOR SITE DE TECNOLOGIA</p> 
-        </footer> 
+<body>
+    <div class="container">
+        <h1>Carrinho de Compras</h1>
+        <table>
 
-    </body>
-   </html>
+            <tbody id="cart-items"></tbody>
+        </table>
+        <form action="?acao=up" method="post">
+            <tbody>
+                <?php
+
+
+                if (count($_SESSION['carrinho']) == 0) {
+                    echo "Não há produto no carrinho";
+
+                    echo "<br>";
+                } else {
+                    foreach ($_SESSION['carrinho'] as $id => $qtd) {
+
+                        $usuario->buscarNoCarrinho($id);
+                        $usuario->alterarQuantidade($id, $qtd);
+                        echo "<br>";
+                        echo "Quantidade: " . '<input type="number" name="prod[' . $id . ']" value= "' . $qtd . '"';
+                        echo '<br>';
+                        echo '<br>';
+                        echo '<a href ="?acao=del&id=' . $id . '">Remover</a>';
+                        echo '<br>';
+                        echo '<br>';
+                       
+                    }
+                    
+
+                }
+                $usuario->buscarTeste();
+
+                ?>
+
+            </tbody>
+            <tfoot>
+
+
+                <button class="clear-cart-button" type="submit">Atualizar Carrinho</button>
+
+                <td colspan="5"><a href="index.php"><input class="clear-cart-button" type="button"
+                            value="Continuar comprando"></a></td>
+                </tr>
+            </tfoot>
+
+
+        </form>
+    </div>
+
+
+
+
+</body>
+
+</html>

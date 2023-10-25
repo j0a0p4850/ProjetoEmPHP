@@ -9,7 +9,7 @@
 <body>
 
     <div class="navbar">
-        <h1>Minha Loja Online</h1>
+        <h1>Lojinha de musica</h1>
         <form id="search-form" >
             <input type="text" id="search-bar" placeholder="Buscar" name="nome" >
             <input type="submit" value="Buscar">
@@ -43,7 +43,7 @@
     </div>
 
     <div class="footer">
-        &copy; 2023 Minha Loja Online. Todos os direitos reservados.
+        &copy; 2023 Lojinha de musica. Todos os direitos reservados.
     </div>
 
 
