@@ -16,7 +16,8 @@ class Actions
     }
     public function excluirItensCarrinho($id)
     {
-        $sql = "DELETE FROM tb_itens_request WHERE id_product = '$id';";
+        $varId = $_SESSION['usuario'];
+        $sql = "DELETE FROM tb_itens_request WHERE id_product = '$id' and id_user = '$varId';";
         $this->executarSQL($sql, "exclusão");
         echo $id;
     }
@@ -29,11 +30,11 @@ class Actions
             . "WHERE `usuario`.`id_usuario` = $id;";
         $this->executarSQL($sql, "alteração");
     }
-    public function incluirTabelaItensRequest($id, $value)
+    public function incluirTabelaItensRequest($id, $value, $user_id)
     {
         // Inserir registro
-        $sql = "INSERT INTO `tb_itens_request` (`id_product`, `quantity_itens_requested`) VALUES "
-            . "('$id', '$value');";
+        $sql = "INSERT INTO `tb_itens_request` (`id_product`,`id_user`, `quantity_itens_requested`) VALUES "
+            . "('$id','$user_id', '$value');";
         $this->executarSQL($sql, "inclusão");
     }
     public function alterarQuantidade($id, $qdt)
@@ -115,15 +116,43 @@ class Actions
         $conexao->desconectar();
     }
 
+
+    public function buscarUsuarioPorId($id_usuario)
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT user_name, email, user_CEP FROM tb_user where id_user = '$id_usuario'";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                echo "Nome: " . $linha["user_name"] . "<br>";
+                echo "Email: " . $linha["email"] . "<br>";
+                echo "CEP: " . $linha["user_CEP"] . "<br>";
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+
+
+
     public function buscarUsuario()
     {
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT id_user, user_name, email FROM tb_user";
+        $sql = "SELECT * FROM tb_user";
         $resultado = $conecta->query($sql);
         if ($resultado->num_rows > 0) {
-            return $resultado;
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                echo '<h3>' . $linha['user_name'] . '</h3> <br>' . $linha['email'] . '<br>';
+            }
         } else {
             echo "0 results";
         }
@@ -133,6 +162,7 @@ class Actions
 
     public function buscarNome($id)
     {
+        session_start();
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
@@ -141,11 +171,21 @@ class Actions
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
+
                 echo "Name: " . $linha["product_name"] . "<br>" . "Preço: " . $linha["product_unit_price"] . "<br>"
                     . $linha["product_description"] . "<br>";
-                //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-                echo '<button> <a href="teste.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
+
+                if (isset($_SESSION['usuario']) && $_SESSION['usuario'] == true) {
+                    // echo '<button> <a href=".php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
+
+                    echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
+                } else {
+                    echo 'Faça login para adicionar ao carrinho.';
+                    echo '<button> <a href="login.php?">Ir Para login</a></button>';
+                }
+
             }
+
         } else {
             echo "Não ha produto";
         }
@@ -155,7 +195,7 @@ class Actions
 
     public function buscarNoCarrinho($id)
     {
-
+        $varId = $_SESSION['usuario'];
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
@@ -200,45 +240,50 @@ class Actions
 
     public function buscarTeste()
     {
+
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT 
-        ir.id_itens_request, 
-        p.id_product,
-        p.product_name, 
-        ir.quantity_itens_requested, 
-        p.product_unit_price, 
-        ir.quantity_itens_requested * p.product_unit_price as junca, 
-        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () as total_price
-    FROM 
-        tb_itens_request ir 
-    INNER JOIN 
-        tb_product p ON ir.id_product = p.id_product  
-    LIMIT 0, 1000;";
+        $sql = "SELECT
+        r.id_request AS id_do_pedido,
+        r.request_total_value AS Valor_Total_Do_Pedido,
+        p.product_name AS Nome_Do_Produto,
+        ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        p.product_description AS Descrição_produto,
+        ir.id_itens_request AS ID_Do_Item,
+        p.id_product AS ID_Do_Produto,
+        p.product_unit_price AS Preço_Unitário,
+        ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+    FROM
+        tb_request r
+    INNER JOIN
+        tb_itens_request ir ON r.id_request = ir.id_request
+    INNER JOIN
+        tb_product p ON ir.id_product = p.id_product
+    WHERE
+        r.id_user = ir.id_user;"; 
 
         $resultado = $conecta->query($sql);
-        if ($resultado->num_rows > 0) {
-            // saída dos dados
-            while ($linha = $resultado->fetch_assoc()) {
-                echo "Total price: R$ " . $linha["total_price"];
-                echo "<br>";
-                break;
-           }
-        } else {
-            
-        }
 
-        // $sql2 = "SELECT SUM(product_unit_price) as total_price FROM tb_product";
-        // $resultado2 = $conecta->query($sql2);
-        // if ($resultado2->num_rows > 0) {
-        //     // saída dos dados
-        //     while ($linha2 = $resultado2->fetch_assoc()) {
-        //         echo "Total price: " . $linha2["total_price"];
-        //     }
-        // } else {
-        //     echo "0 results";
-        // }
+        if ($resultado->num_rows > 0) {
+        while ($linha = $resultado->fetch_assoc()) {
+            $var = $linha['Total_Do_Pedido'];
+        echo "<br>";
+        echo $linha['Nome_Do_Produto']. "<br>";
+       
+        echo $linha['Quantidade_pedida_produto']. "<br>";
+        
+        echo $linha['Descrição_produto']. "<br>";
+        
+        echo "R$ ".$linha['Preço_Unitário']. "<br>";
+        
+       
+    }
+    echo "<br>";
+    echo "Total do pedido: R$ ". $var. "<br>";
+}
+    
 
         $conexao->desconectar();
     }
@@ -249,31 +294,24 @@ class Actions
 
     public function buscarPreco($id)
     {
-
-
+        $totalDoCarrinho = 0; 
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
-
-        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product like '$id'";
+    
+        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; 
         $resultado = $conecta->query($sql);
+        
         if ($resultado->num_rows > 0) {
-            // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-
-
-
-
-                // $var = (double) $linha['product_unit_price'];
-                // "<br>";
-                // echo 'Preco do produto : R$ ' . number_format($linha['product_unit_price'], 2, ',', '.') . "<br>";
-                // echo "Variavel: " . $var . "<br>";
-                // echo "Variavel: " . $linha['id_product'] . "<br>";
+                $productPrice = (double)$linha['product_unit_price'];
+                $totalDoCarrinho += $productPrice; 
             }
-        } else {
-            echo "Não foi encontrado nenhum produto com esse nome, Por favor verifique o nome digitado";
         }
-
+    
+         
+    
         $conexao->desconectar();
+        return $totalDoCarrinho;
     }
 
     public function buscarDisciplina($id_usuario)
@@ -320,9 +358,47 @@ class Actions
         $conexao->desconectar();
     }
 
+    public function incluirPedido($id_usuario)
+    {
+        
+        echo $id_usuario;
+        echo "<br>";
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+    
+        // Crie o pedido sem definir request_total_value
+        $sql = "INSERT INTO `tb_request` (`id_user`, `request_total_value`) VALUES "
+            . "('$id_usuario', 0);";
+        $conecta->query($sql);
+
+        
+        $id_request = $conecta->insert_id;
+        
+    
+        foreach ($_SESSION['carrinho'] as $id_product => $quantidade) {
+            $sql = "INSERT INTO tb_itens_request (id_request, id_product, id_user, quantity_itens_requested) VALUES ($id_request, $id_product, $id_usuario,  $quantidade)";
+            $conecta->query($sql);
+        }
+    
+        
+        $sql = "UPDATE tb_request SET request_total_value = (
+            SELECT SUM(quantity_itens_requested * product_unit_price)
+            FROM tb_itens_request ir
+            INNER JOIN tb_product p ON ir.id_product = p.id_product
+            WHERE ir.id_request = $id_request
+        ) WHERE id_request = $id_request";
+        $conecta->query($sql);
+        
+    
+        $conexao->desconectar();
+    }
+    
+    
+    
+
+
+
 }
-
-
 
 
 

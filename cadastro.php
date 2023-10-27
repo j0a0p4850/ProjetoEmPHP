@@ -24,8 +24,9 @@
                 <input type="password" id="senha" name="senha" required>
             </div>
             <div class="form-group">
-                <label for="endereco">Endereço:</label>
-                <input type="text" id="CEP" name="CEP" required>
+                <label for="CEP">CEP:</label>
+                <input type="text" id="CEP" name="CEP" required pattern="\d{4}-\d{3}">
+                
             </div>
             <div class="form-group">
                 <input type="submit" value="Cadastrar">
@@ -43,10 +44,25 @@
             
            $usuario->incluir($name, $email, $password, $endereco);
            
-           $resultado = $usuario->buscarUsuario();
+           
            }
            
         ?>
     </div>
+
+    <script>
+        
+        document.getElementById('CEP').addEventListener('input', function (e) {
+            let value = e.target.value;
+            value = value.replace(/\D/g, ''); 
+            if (value.length > 7) {
+                value = value.substring(0, 7);
+            }
+            if (value.length > 4) {
+                value = value.substring(0, 4) + '-' + value.substring(4);
+            }
+            e.target.value = value;
+        });
+    </script>
 </body>
 </html>

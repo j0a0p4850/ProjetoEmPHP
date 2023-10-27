@@ -13,6 +13,8 @@
         <form id="search-form" >
             <input type="text" id="search-bar" placeholder="Buscar" name="nome" >
             <input type="submit" value="Buscar">
+            <a href="perfil_Page.php"><input type="button" value="Perfil"></a>
+            <a href="carrinho.php"><input type="button" value="Carrinho Usuario"></a>
         </form>
     <div>
             <?php

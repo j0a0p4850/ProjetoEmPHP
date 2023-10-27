@@ -36,6 +36,9 @@
                 if($id_usuario = $usuario->logar($email, $senha)){
                     $_SESSION['usuario'] = $id_usuario;
                     header('Location: index.php');
+                    
+                   
+                    
                 } else {
                     echo 'Usuário ou senha inválidos';
                 }
