@@ -10,7 +10,10 @@ if (!isset($_SESSION['usuario'])) {
 $usuario = new Actions();
 $user_id = $_SESSION['usuario'];
 $usuario->buscarUsuarioPorId($user_id);
+echo '<a href="atualizarDadosPerfil.php">Atualizar Dados</a>';
+echo "<br>";
 echo '<a href="logout.php">Logout</a>';
+
 
 
 ?>

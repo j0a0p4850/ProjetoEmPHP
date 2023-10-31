@@ -1,9 +1,10 @@
 <?php
 include 'conexaoDB.php';
+$var2 = 0;
 class Actions
 {
 
-    public $var2 = 0;
+    
 
 
     public function incluir($name, $email, $password, $endereco)
@@ -14,6 +15,16 @@ class Actions
             . "(NULL, '$name', '$email', '$password', '$endereco');";
         $this->executarSQL($sql, "inclusão");
     }
+
+    public function inserirComentario($product_id, $comentario, $id_usuario)
+    {
+        
+        // Inserir registro
+        $sql = "INSERT INTO `tb_avaliacao` (`id_user`, "
+            . "`id_product`, `client_comment_avaliation`) VALUES "
+            . "('$id_usuario', '$product_id', '$comentario');";
+        $this->executarSQL($sql, "inclusão");
+    }
     public function excluirItensCarrinho($id)
     {
         $varId = $_SESSION['usuario'];
@@ -21,6 +32,8 @@ class Actions
         $this->executarSQL($sql, "exclusão");
         echo $id;
     }
+
+  
     public function alterar($nome, $email, $senha, $id)
     {
         $sql = "UPDATE `tb_user` SET"
@@ -88,7 +101,7 @@ class Actions
 
 
                 //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-                echo '<a href="product.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
+                echo '<a href="teste.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
             }
         } else {
             echo "0 results";
@@ -127,9 +140,9 @@ class Actions
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Nome: " . $linha["user_name"] . "<br>";
-                echo "Email: " . $linha["email"] . "<br>";
-                echo "CEP: " . $linha["user_CEP"] . "<br>";
+                echo "Nome: " . $linha["user_name"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>'. "<br>";
+                echo "Email: " . $linha["email"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=email">Editar Email</a>'. "<br>";
+                echo "CEP: " . $linha["user_CEP"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>'. "<br>";
             }
         } else {
             echo "0 results";
@@ -162,7 +175,7 @@ class Actions
 
     public function buscarNome($id)
     {
-        session_start();
+        
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
@@ -191,6 +204,44 @@ class Actions
         }
 
         $conexao->desconectar();
+    }
+
+    public function avaliacoes($id){
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        
+        $sql = "SELECT id_avaliacao, u.id_user, p.id_product, user_name, client_comment_avaliation FROM tb_avaliacao av INNER JOIN tb_user u ON av.id_user = u.id_user 
+        INNER JOIN tb_product p ON av.id_product = p.id_product WHERE p.id_product LIKE '$id';";
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+         
+            while ($linha = $resultado->fetch_assoc()) {
+                echo "Name: " . $linha["user_name"] . "<br>" . "Comentario: " . $linha["client_comment_avaliation"] . "<br>". "<br>";
+
+
+                if($_SESSION['usuario'] == $linha['id_user']){
+                 echo "<a href='excluirComentario.php?comentario_id={$linha['id_avaliacao']}'>Excluir</a><br>";
+
+            }
+            else{
+
+            }
+        }
+    }
+        
+
+    
+        $conexao->desconectar();
+
+}
+
+    public function excluirComentario($comentarioId)
+    {
+        $sql = "DELETE FROM tb_avaliacao WHERE id_avaliacao = '$comentarioId';";
+        $this->executarSQL($sql, "exclusão");
+        
     }
 
     public function buscarNoCarrinho($id)
@@ -294,24 +345,28 @@ class Actions
 
     public function buscarPreco($id)
     {
-        $totalDoCarrinho = 0; 
+        
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
     
-        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; 
+        $sql = "SELECT SUM(ir.quantity_itens_requested * p.product_unit_price) AS Total_Do_Pedido
+        FROM tb_request r
+        INNER JOIN tb_itens_request ir ON r.id_request = ir.id_request
+        INNER JOIN tb_product p ON ir.id_product = p.id_product
+        WHERE r.id_user = $id; "; 
         $resultado = $conecta->query($sql);
         
         if ($resultado->num_rows > 0) {
             while ($linha = $resultado->fetch_assoc()) {
-                $productPrice = (double)$linha['product_unit_price'];
-                $totalDoCarrinho += $productPrice; 
+                $total_Price = (double)$linha['Total_Do_Pedido'];
+                
             }
         }
     
          
     
         $conexao->desconectar();
-        return $totalDoCarrinho;
+        return $total_Price;
     }
 
     public function buscarDisciplina($id_usuario)
@@ -392,7 +447,16 @@ class Actions
     
         $conexao->desconectar();
     }
-    
+
+    public function atualizarInformacoesUsuario($user_id, $user_name, $email, $user_CEP)
+    {
+        $sql = "UPDATE `tb_user` SET"
+            . " `user_name` = '$user_name', "
+            . "`email` = '$email', "
+            . "`user_CEP` = '$user_CEP' "
+            . "WHERE `usuario`.`id_user` = $user_id;";
+        $this->executarSQL($sql, "alteração");
+    }
     
     
 
