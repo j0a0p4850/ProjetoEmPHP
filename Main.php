@@ -4,7 +4,7 @@ $var2 = 0;
 class Actions
 {
 
-    
+
 
 
     public function incluir($name, $email, $password, $endereco)
@@ -18,7 +18,7 @@ class Actions
 
     public function inserirComentario($product_id, $comentario, $id_usuario)
     {
-        
+
         // Inserir registro
         $sql = "INSERT INTO `tb_avaliacao` (`id_user`, "
             . "`id_product`, `client_comment_avaliation`) VALUES "
@@ -33,7 +33,7 @@ class Actions
         echo $id;
     }
 
-  
+
     public function alterar($nome, $email, $senha, $id)
     {
         $sql = "UPDATE `tb_user` SET"
@@ -43,11 +43,11 @@ class Actions
             . "WHERE `usuario`.`id_usuario` = $id;";
         $this->executarSQL($sql, "alteração");
     }
-    public function incluirTabelaItensRequest($id, $value, $user_id)
+    public function incluirTabelaItensRequest($id, $qntd, $user_id)
     {
         // Inserir registro
         $sql = "INSERT INTO `tb_itens_request` (`id_product`,`id_user`, `quantity_itens_requested`) VALUES "
-            . "('$id','$user_id', '$value');";
+            . "('$id','$user_id', '$qntd');";
         $this->executarSQL($sql, "inclusão");
     }
     public function alterarQuantidade($id, $qdt)
@@ -140,9 +140,9 @@ class Actions
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Nome: " . $linha["user_name"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>'. "<br>";
-                echo "Email: " . $linha["email"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=email">Editar Email</a>'. "<br>";
-                echo "CEP: " . $linha["user_CEP"] . "<br>". '<a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>'. "<br>";
+                echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>' . "<br>";
+                echo "Email: " . $linha["email"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=email">Editar Email</a>' . "<br>";
+                echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>' . "<br>";
             }
         } else {
             echo "0 results";
@@ -175,7 +175,7 @@ class Actions
 
     public function buscarNome($id)
     {
-        
+
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
@@ -206,42 +206,42 @@ class Actions
         $conexao->desconectar();
     }
 
-    public function avaliacoes($id){
+    public function avaliacoes($id)
+    {
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        
+
         $sql = "SELECT id_avaliacao, u.id_user, p.id_product, user_name, client_comment_avaliation FROM tb_avaliacao av INNER JOIN tb_user u ON av.id_user = u.id_user 
         INNER JOIN tb_product p ON av.id_product = p.id_product WHERE p.id_product LIKE '$id';";
         $resultado = $conecta->query($sql);
 
         if ($resultado->num_rows > 0) {
-         
+
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Name: " . $linha["user_name"] . "<br>" . "Comentario: " . $linha["client_comment_avaliation"] . "<br>". "<br>";
+                echo "Name: " . $linha["user_name"] . "<br>" . "Comentario: " . $linha["client_comment_avaliation"] . "<br>" . "<br>";
 
 
-                if($_SESSION['usuario'] == $linha['id_user']){
-                 echo "<a href='excluirComentario.php?comentario_id={$linha['id_avaliacao']}'>Excluir</a><br>";
+                if ($_SESSION['usuario'] == $linha['id_user']) {
+                    echo "<a href='excluirComentario.php?comentario_id={$linha['id_avaliacao']}'>Excluir</a><br>";
 
-            }
-            else{
+                } else {
 
+                }
             }
         }
-    }
-        
 
-    
+
+
         $conexao->desconectar();
 
-}
+    }
 
     public function excluirComentario($comentarioId)
     {
         $sql = "DELETE FROM tb_avaliacao WHERE id_avaliacao = '$comentarioId';";
         $this->executarSQL($sql, "exclusão");
-        
+
     }
 
     public function buscarNoCarrinho($id)
@@ -292,8 +292,12 @@ class Actions
     public function buscarTeste()
     {
 
+        $teste = $_SESSION['usuario'];
+
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
+
+
 
         $sql = "SELECT
         r.id_request AS id_do_pedido,
@@ -313,28 +317,55 @@ class Actions
     INNER JOIN
         tb_product p ON ir.id_product = p.id_product
     WHERE
-        r.id_user = ir.id_user;"; 
+        r.id_user = ir.id_user
+        AND r.id_request = (
+            SELECT id_request
+            FROM tb_request
+            WHERE id_user = $teste
+            ORDER BY time_do_pedido DESC
+            LIMIT 1
+        );";
+
+
+        //     $sql = "SELECT
+        //     r.id_request AS id_do_pedido,
+        //     r.request_total_value AS Valor_Total_Do_Pedido,
+        //     p.product_name AS Nome_Do_Produto,
+        //     ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        //     p.product_description AS Descrição_produto,
+        //     ir.id_itens_request AS ID_Do_Item,
+        //     p.id_product AS ID_Do_Produto,
+        //     p.product_unit_price AS Preço_Unitário,
+        //     ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        //     SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+        // FROM
+        //     tb_request r
+        // INNER JOIN
+        //     tb_itens_request ir ON r.id_request = ir.id_request
+        // INNER JOIN
+        //     tb_product p ON ir.id_product = p.id_product
+        // WHERE
+        //     r.id_user = ir.id_user;";
 
         $resultado = $conecta->query($sql);
 
         if ($resultado->num_rows > 0) {
-        while ($linha = $resultado->fetch_assoc()) {
-            $var = $linha['Total_Do_Pedido'];
-        echo "<br>";
-        echo $linha['Nome_Do_Produto']. "<br>";
-       
-        echo $linha['Quantidade_pedida_produto']. "<br>";
-        
-        echo $linha['Descrição_produto']. "<br>";
-        
-        echo "R$ ".$linha['Preço_Unitário']. "<br>";
-        
-       
-    }
-    echo "<br>";
-    echo "Total do pedido: R$ ". $var. "<br>";
-}
-    
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['Total_Do_Pedido'];
+                echo "<br>";
+                echo $linha['Nome_Do_Produto'] . "<br>";
+
+                echo $linha['Quantidade_pedida_produto'] . "<br>";
+
+                echo $linha['Descrição_produto'] . "<br>";
+
+                echo "R$ " . $linha['Preço_Unitário'] . "<br>";
+
+            }
+            echo "<br>";
+            echo "Total do pedido: R$ " . $var . "<br>";
+        }
+
 
         $conexao->desconectar();
     }
@@ -345,50 +376,24 @@ class Actions
 
     public function buscarPreco($id)
     {
-        
-        $conexao = new ConexaoBD();
-        $conecta = $conexao->conectar();
-    
-        $sql = "SELECT SUM(ir.quantity_itens_requested * p.product_unit_price) AS Total_Do_Pedido
-        FROM tb_request r
-        INNER JOIN tb_itens_request ir ON r.id_request = ir.id_request
-        INNER JOIN tb_product p ON ir.id_product = p.id_product
-        WHERE r.id_user = $id; "; 
-        $resultado = $conecta->query($sql);
-        
-        if ($resultado->num_rows > 0) {
-            while ($linha = $resultado->fetch_assoc()) {
-                $total_Price = (double)$linha['Total_Do_Pedido'];
-                
-            }
-        }
-    
-         
-    
-        $conexao->desconectar();
-        return $total_Price;
-    }
 
-    public function buscarDisciplina($id_usuario)
-    {
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT d.nome FROM disciplina d "
-            . "INNER JOIN usuario u ON u.id_usuario=d.id_usuario"
-            . " WHERE u.id_usuario = $id_usuario;";
+        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; // Use "=" instead of "like" to compare IDs
         $resultado = $conecta->query($sql);
+
         if ($resultado->num_rows > 0) {
-            // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Disciplina: " . $linha["nome"] . "<br>";
+                $productPrice = (double) $linha['product_unit_price'];
             }
-        } else {
-            echo "0 results";
         }
 
+
         $conexao->desconectar();
+        return $productPrice;
     }
+
 
     public function logar($email, $senha)
     {
@@ -415,27 +420,27 @@ class Actions
 
     public function incluirPedido($id_usuario)
     {
-        
+
         echo $id_usuario;
         echo "<br>";
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
-    
+
         // Crie o pedido sem definir request_total_value
-        $sql = "INSERT INTO `tb_request` (`id_user`, `request_total_value`) VALUES "
-            . "('$id_usuario', 0);";
+        $sql = "INSERT INTO `tb_request` (`id_user`, `request_total_value`, `time_do_pedido`) VALUES "
+            . "('$id_usuario', 0, NOW());";
         $conecta->query($sql);
 
-        
+
         $id_request = $conecta->insert_id;
-        
-    
+
+
         foreach ($_SESSION['carrinho'] as $id_product => $quantidade) {
             $sql = "INSERT INTO tb_itens_request (id_request, id_product, id_user, quantity_itens_requested) VALUES ($id_request, $id_product, $id_usuario,  $quantidade)";
             $conecta->query($sql);
         }
-    
-        
+
+
         $sql = "UPDATE tb_request SET request_total_value = (
             SELECT SUM(quantity_itens_requested * product_unit_price)
             FROM tb_itens_request ir
@@ -443,8 +448,8 @@ class Actions
             WHERE ir.id_request = $id_request
         ) WHERE id_request = $id_request";
         $conecta->query($sql);
-        
-    
+
+
         $conexao->desconectar();
     }
 
@@ -457,9 +462,147 @@ class Actions
             . "WHERE `usuario`.`id_user` = $user_id;";
         $this->executarSQL($sql, "alteração");
     }
-    
-    
 
+    public function buscarTotalPrice()
+    {
+
+        $teste = $_SESSION['usuario'];
+
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT
+        r.id_request AS id_do_pedido,
+        r.request_total_value AS Valor_Total_Do_Pedido,
+        p.product_name AS Nome_Do_Produto,
+        ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        p.product_description AS Descrição_produto,
+        ir.id_itens_request AS ID_Do_Item,
+        p.id_product AS ID_Do_Produto,
+        p.product_unit_price AS Preço_Unitário,
+        ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+    FROM
+        tb_request r
+    INNER JOIN
+        tb_itens_request ir ON r.id_request = ir.id_request
+    INNER JOIN
+        tb_product p ON ir.id_product = p.id_product
+    WHERE
+        r.id_user = ir.id_user
+        AND r.id_request = (
+            SELECT id_request
+            FROM tb_request
+            WHERE id_user = $teste
+            ORDER BY time_do_pedido DESC
+            LIMIT 1
+        );";
+
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['Total_Do_Pedido'];
+            }
+
+            return $var;
+        }
+
+
+        $conexao->desconectar();
+    }
+
+    public function pegarNome()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $teste = $_SESSION['usuario'];
+
+        $sql = "SELECT user_name FROM TB_USER WHERE ID_USER = $teste";
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['user_name'];
+            }
+
+            return $var;
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function pegarCEP()
+    {
+
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $teste = $_SESSION['usuario'];
+
+        $sql = "SELECT user_CEP FROM TB_USER WHERE ID_USER = $teste";
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['user_CEP'];
+            }
+
+            return $var;
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function pegarEnderecoPorCEP()
+    {
+        $usuario = new Actions();
+        $cep = $usuario->pegarCEP();
+        $cep = str_replace('-', '', $cep); // Remove qualquer hífen do CEP
+
+
+        if (empty($cep)) {
+            return "CEP VAZIO";
+        } else {
+            $url = "https://viacep.com.br/ws/$cep/json/";
+
+
+
+            $http_response = get_headers($url, 1);
+
+            if (strpos($http_response[0], '400 Bad Request') !== false) {
+                throw new Exception("Esse CEP é invalido, Por gentileza refaça com um valido!");
+            } else {
+                $json = file_get_contents($url);
+
+                if ($json === false) {
+                    return null; // Erro na solicitação
+                } else {
+
+
+                    $endereco = json_decode($json);
+
+                    // Analisa o JSON retornado
+                    $endereco = json_decode($json);
+
+                    if (isset($endereco->erro)) {
+                        return "CEP não encontrado"; // 
+                    } else {
+
+                        if ($endereco) {
+                            return "Logradouro: " . $endereco->logradouro . ", <br>" .
+                                "Bairro: " . $endereco->bairro . ", <br>" .
+                                "Cidade: " . $endereco->localidade . ", <br>" .
+                                "Estado: " . $endereco->uf . "<br>";
+                        } else {
+                            echo "CEP não encontrado ou houve um erro na solicitação.";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 }

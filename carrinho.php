@@ -3,15 +3,7 @@ session_start();
 include 'Main.php';
 $usuario = new Actions();
 
-function verificarExistencia($numSei, $id)
-{
-    foreach ($_SESSION['carrinho'] as $numSei) {
-        if ($numSei === $id) {
-            return true;
-        }
-    }
-    return false; // O elemento não foi encontrado no array
-}
+
 
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = array();
@@ -41,7 +33,7 @@ if (isset($_GET['acao'])) {
         $id = intval($_GET['id']);
         (int) $user_id = $_SESSION['usuario'];
         if (!isset($_SESSION['carrinho'][$id])) {
-
+            
             $_SESSION['carrinho'][$id] = 1;
 
         } else {
@@ -206,11 +198,13 @@ if (isset($_GET['acao'])) {
                         echo '<br>';
 
                     }
-                    echo "Valor total do carrinho: $" . number_format($totalCarrinho, 2);
+                    echo "Valor total do carrinho: $" . number_format($totalCarrinho,2,".","") ."";
                     echo '<br>';
 
+                 
 
-                }
+
+            }
 
 
                 ?>
