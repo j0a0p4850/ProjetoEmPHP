@@ -55,11 +55,11 @@
         document.getElementById('CEP').addEventListener('input', function (e) {
             let value = e.target.value;
             value = value.replace(/\D/g, ''); 
-            if (value.length > 7) {
-                value = value.substring(0, 7);
+            if (value.length > 8) {
+                value = value.substring(0, 8);
             }
-            if (value.length > 4) {
-                value = value.substring(0, 4) + '-' + value.substring(4);
+            if (value.length > 5) {
+                value = value.substring(0, 5) + '-' + value.substring(5);
             }
             e.target.value = value;
         });

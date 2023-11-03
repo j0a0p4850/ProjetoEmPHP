@@ -101,13 +101,47 @@ class Actions
 
 
                 //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-                echo '<a href="teste.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
+                echo '<a href="product.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
             }
         } else {
             echo "0 results";
         }
 
         $conexao->desconectar();
+    }
+    public function buscar2_0()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $var = array();
+
+        $sql = "SELECT id_product, product_name, product_unit_price, product_img FROM tb_product";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = array(
+                    'ID' => $linha['id_product'],
+                    'Nome' => $linha['product_name'],
+                    'Preco' => $linha['product_unit_price'],
+                    'Imagem' => 'img/' . $linha['product_img'] // Caminho relativo para o diretório de imagens
+                );
+
+                $var['Imagem'] = "<img src='/imgs/" . $var['product_img'] . "' alt='" . $var['product_name'] . "' />";
+                $vars[] = $var;
+
+
+                //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
+ 
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+        return $vars;
+
     }
 
     public function buscarCordas()
@@ -143,6 +177,10 @@ class Actions
                 echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>' . "<br>";
                 echo "Email: " . $linha["email"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=email">Editar Email</a>' . "<br>";
                 echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>' . "<br>";
+
+            //     echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="teste.php?campo=nome">Editar Nome</a>' . "<br>";
+            //     echo "Email: " . $linha["email"] . "<br>" . '<a href="teste.php?campo=email">Editar Email</a>' . "<br>";
+            //     echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="teste.php?campo=cep">Editar CEP</a>' . "<br>";
             }
         } else {
             echo "0 results";
@@ -602,6 +640,31 @@ class Actions
                 }
             }
         }
+    }
+
+    public function alterar_Nome_Usuario($nome)
+    {
+        $id = $_SESSION['usuario'];
+        $sql = "UPDATE `tb_user` SET"
+            . " `user_name` = '$nome'"
+            . "WHERE `id_user` = $id;";
+        $this->executarSQL($sql, "alteração");
+    }
+    public function alterar_Email($email)
+    {
+        $id = $_SESSION['usuario'];
+        $sql = "UPDATE `tb_user` SET"
+            . " `email` = '$email'"
+            . "WHERE `id_user` = $id;";
+        $this->executarSQL($sql, "alteração");
+    }
+    public function alterar_CEP_Usuario($cep)
+    {
+        $id = $_SESSION['usuario'];
+        $sql = "UPDATE `tb_user` SET"
+            . " `user_CEP` = '$cep'"
+            . "WHERE `id_user` = $id;";
+        $this->executarSQL($sql, "alteração");
     }
 
 

@@ -1,58 +1,70 @@
-<?php
-include 'Main.php';
-session_start();
-$usuario = new Actions();
-$id_user = $_SESSION['usuario'];
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-if (isset($_GET['id'])) {
-    $product_id = $_GET['id'];
-    $usuario->buscarNome($product_id);
-    echo '<a href="index.php">Voltar Pagina inicial</a>';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <title>Minha Loja Online</title>
+</head>
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comentario'])) {
-        $comentario = $_POST['comentario'];
-        
-        if (!empty($comentario)) {
-            // Insere o comentário no banco de dados
-            $usuario->inserirComentario($product_id, $comentario, $id_user);
-            
-            // Redireciona o usuário de volta para a mesma página
-            header("Location: teste.php?id=$product_id");
-            exit();
-        } else {
-            echo "O campo de comentário está vazio. Por favor, insira um comentário.";
+<body>
+
+    <div class="navbar">
+        <h1>Lojinha de musica</h1>
+        <form id="search-form">
+            <input type="text" id="search-bar" placeholder="Buscar" name="nome">
+            <input type="submit" value="Buscar">
+            <a href="perfil_Page.php"><input type="button" value="Perfil"></a>
+            <a href="carrinho.php"><input type="button" value="Carrinho Usuario"></a>
+        </form>
+        <div>
+
+
+
+
+            <?php
+            include 'Main.php';
+            $usuario = new Actions();
+            if (!isset($_GET['nome'])) {
+
+            } else {
+                $nome = $_GET['nome'];
+                $usuario->buscarNomeProduto($nome);
+            }
+
+            ?>
+        </div>
+    </div>
+
+
+    <?php
+    $usuario = new Actions();
+    $produtos = $usuario->buscar2_0();
+    if ($produtos !== null) {
+        foreach ($produtos as $veiculo) {
+            echo '<h2>' . $veiculo['product_name'] . '</h2>'; 
+            echo str_replace('<img', '<img class="imagem-pequena"', $veiculo['product_img']);// O campo 'Imagem' já contém a tag <img> completa
+            echo '<p>Preço: ' . number_format($veiculo['product_unit_price'], 2, ',', '.'). '</p>';
+            echo "<a class='ver-detalhes' href='DetalhesVeiculos.php?id=" . $veiculo['ID'] . "'>VER DETALHES</a>";
         }
     }
     
-    echo "<br>";
-    echo "<br>";
-    echo "<br>";
     
-    $usuario->avaliacoes($product_id);
-    
-    // Formulário para inserir comentários
-    echo "<form method='post' action=''>";
-    echo "<input type='hidden' name='product_id' value='$product_id'>";
-    echo "<textarea name='comentario' placeholder='Insira seu comentário'></textarea>";
-    echo "<input type='submit' value='Enviar Comentário'>";
-    echo "</form";
-} else {
-    echo "ID do produto não especificado.";
-}
-?>
+    ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#enviar-comentario').click(function() {
-        // Código para enviar comentários (já mencionado anteriormente)
-    });
 
-    // Carregar comentários iniciais
-    $.get('carregar_comentarios.php', { product_id: <?php echo $product_id; ?> }, function(data) {
-        $('#comentarios').html(data);
-    });
+    ?>
 
-    
-});
-</script>
+
+
+    </div>
+
+    <div class="footer">
+        &copy; 2023 Lojinha de musica. Todos os direitos reservados.
+    </div>
+
+
+</body>
+
+</html>
