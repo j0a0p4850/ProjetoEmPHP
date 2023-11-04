@@ -67,6 +67,7 @@ class Actions
             echo "Erro na $msg do registro: " . $conecta->error . "<br>";
         }
         $conexao->desconectar();
+        
     }
 
     public function buscar()
@@ -92,57 +93,71 @@ class Actions
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT id_product, product_name, product_unit_price FROM tb_product";
-        $resultado = $conecta->query($sql);
-        if ($resultado->num_rows > 0) {
-            // saída dos dados
-            while ($linha = $resultado->fetch_assoc()) {
-                echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>';
-
-
-                //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-                echo '<a href="product.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
-            }
-        } else {
-            echo "0 results";
-        }
-
-        $conexao->desconectar();
-    }
-    public function buscar2_0()
-    {
-        $conexao = new ConexaoBD();
-        $conecta = $conexao->conectar();
-
-        $var = array();
-
         $sql = "SELECT id_product, product_name, product_unit_price, product_img FROM tb_product";
         $resultado = $conecta->query($sql);
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                $var = array(
-                    'ID' => $linha['id_product'],
-                    'Nome' => $linha['product_name'],
-                    'Preco' => $linha['product_unit_price'],
-                    'Imagem' => 'img/' . $linha['product_img'] // Caminho relativo para o diretório de imagens
-                );
-
-                $var['Imagem'] = "<img src='/imgs/" . $var['product_img'] . "' alt='" . $var['product_name'] . "' />";
-                $vars[] = $var;
-
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
 
                 //echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
- 
+                //echo '<a href="product.php?id=' . $linha['id_product'] . '">Ver detalhes</a>';
             }
         } else {
             echo "0 results";
         }
 
         $conexao->desconectar();
-        return $vars;
-
     }
+    public function buscar2_0($id)
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_name, product_unit_price, product_description, product_img FROM tb_product WHERE id_product like '$id'";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo "Name: " . $linha["product_name"] . "<br>" . "Preço: " . $linha["product_unit_price"] . "<br>";
+                echo '
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                        ' . "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">'. $linha['product_name'] . '</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <h2 class="card-text"> R$ '.$linha['product_unit_price'].'</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ';
+
+            }
+        } else {
+            echo "Não ha produto";
+        }
+
+        $conexao->desconectar();
+    }
+
+
 
     public function buscarCordas()
     {
@@ -174,13 +189,13 @@ class Actions
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>' . "<br>";
-                echo "Email: " . $linha["email"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=email">Editar Email</a>' . "<br>";
-                echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>' . "<br>";
+                echo "Nome: " . $linha["user_name"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a></button>' . "<br>";
+                echo "Email: " . $linha["email"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=email">Editar Email</a></button>' . "<br>";
+                echo "CEP: " . $linha["user_CEP"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a></button>' . "<br>";
 
-            //     echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="teste.php?campo=nome">Editar Nome</a>' . "<br>";
-            //     echo "Email: " . $linha["email"] . "<br>" . '<a href="teste.php?campo=email">Editar Email</a>' . "<br>";
-            //     echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="teste.php?campo=cep">Editar CEP</a>' . "<br>";
+                //     echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="teste.php?campo=nome">Editar Nome</a>' . "<br>";
+                //     echo "Email: " . $linha["email"] . "<br>" . '<a href="teste.php?campo=email">Editar Email</a>' . "<br>";
+                //     echo "CEP: " . $linha["user_CEP"] . "<br>" . '<a href="teste.php?campo=cep">Editar CEP</a>' . "<br>";
             }
         } else {
             echo "0 results";
@@ -228,8 +243,8 @@ class Actions
 
                 if (isset($_SESSION['usuario']) && $_SESSION['usuario'] == true) {
                     // echo '<button> <a href=".php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-
-                    echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
+                    
+                    echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>'. '<br>'. '<br>';
                 } else {
                     echo 'Faça login para adicionar ao carrinho.';
                     echo '<button> <a href="login.php?">Ir Para login</a></button>';
@@ -321,6 +336,7 @@ class Actions
             }
         } else {
             echo "Não foi encontrado nenhum produto com esse nome, Por favor verifique o nome digitado";
+
         }
 
         $conexao->desconectar();
@@ -391,13 +407,13 @@ class Actions
             while ($linha = $resultado->fetch_assoc()) {
                 $var = $linha['Total_Do_Pedido'];
                 echo "<br>";
-                echo $linha['Nome_Do_Produto'] . "<br>";
+                echo "Produto: ".$linha['Nome_Do_Produto'] . "<br>";
 
-                echo $linha['Quantidade_pedida_produto'] . "<br>";
+                echo "Quantidade Pedida: ". $linha['Quantidade_pedida_produto'] . "<br>";
 
-                echo $linha['Descrição_produto'] . "<br>";
+                echo "Descrição do Produto: ".$linha['Descrição_produto'] . "<br>";
 
-                echo "R$ " . $linha['Preço_Unitário'] . "<br>";
+                echo "Preço: R$ " . $linha['Preço_Unitário'] . "<br>";
 
             }
             echo "<br>";
@@ -665,6 +681,27 @@ class Actions
             . " `user_CEP` = '$cep'"
             . "WHERE `id_user` = $id;";
         $this->executarSQL($sql, "alteração");
+    }
+
+    public function cancelarPedido()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $id_usuario = $_SESSION['usuario'];
+        $sql = "SELECT MAX(id_request) as ultimo_pedido FROM tb_request where id_user = '$id_usuario'";
+        $resultado = $conecta->query($sql);
+
+        if($linha = $resultado->fetch_assoc()) {
+            $id_ultimo_pedido = $linha['ultimo_pedido'];
+        $sql = "DELETE FROM tb_itens_request WHERE id_request = '$id_ultimo_pedido';";
+        $conecta->query($sql);
+        $sql = "DELETE FROM tb_request WHERE id_request = '$id_ultimo_pedido';";
+        $this->executarSQL($sql, "Cancelamento feito");
+        echo "Por favor clique no botao de Pagina inicial";
+            }
+        $conexao->desconectar();
+
     }
 
 

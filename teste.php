@@ -1,70 +1,194 @@
+<?php
+session_start();
+include 'Main.php';
+$usuario = new Actions();
+
+
+
+if (!isset($_SESSION['carrinho'])) {
+    $_SESSION['carrinho'] = array();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_SESSION['carrinho'])) {
+        if (isset($_POST['prod'])) {
+            foreach ($_POST['prod'] as $id => $qtd) {
+                $id = intval($id);
+                $qtd = intval($qtd);
+                if (!empty($qtd) || $qtd != 0) {
+                    $_SESSION['carrinho'][$id] = $qtd;
+                } else {
+                    unset($_SESSION['carrinho'][$id]);
+                }
+            }
+        }
+    }
+}
+
+
+
+if (isset($_GET['acao'])) {
+    //Adicionando
+    if ($_GET['acao'] == 'add') {
+        $id = intval($_GET['id']);
+        (int) $user_id = $_SESSION['usuario'];
+        if (!isset($_SESSION['carrinho'][$id])) {
+            
+            $_SESSION['carrinho'][$id] = 1;
+
+        } else {
+
+
+        }
+    }
+}
+
+
+
+
+
+
+if (isset($_GET['acao'])) {
+    if ($_GET['acao'] == 'del') {
+
+        $id = intval($_GET['id']);
+        $usuario = new Actions();
+
+        if (isset($_SESSION['carrinho'][$id])) {
+            unset($_SESSION['carrinho'][$id]);
+        }
+    }
+} else {
+
+}
+
+if (isset($_GET['acao'])) {
+    if ($_GET['acao'] == 'up') {
+        if (is_array($_POST['prod'])) {
+            foreach ($_POST['prod'] as $id => $qtd) {
+                $id = intval($id);
+                $qtd = intval($qtd);
+                if (!empty($qtd) || $qtd != 0) {
+                    $_SESSION['carrinho'][$id] = $qtd;
+
+                } else {
+
+                    unset($_SESSION['carrinho'][$id]);
+                }
+            }
+        }
+    }
+} else {
+
+}
+(int)$user_id = $_SESSION['usuario'];
+if (isset($_GET['acao'])) {
+    if ($_GET['acao'] == 'fim') {
+            $usuario->incluirPedido($user_id);
+            $_SESSION['carrinho'] = array();
+            header('Location: pagConfirmacaoPedido.php');
+
+    }
+} else {
+
+}
+
+//echo $user_id;
+
+
+
+?>
+
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Style.css">
-    <title>Minha Loja Online</title>
+    <title>Carrinho de Compras</title>
+   <link rel="stylesheet" href="Style.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
+    <div class="container_cart">
+        <h1>Carrinho de Compras</h1>
+        <table class="table_cart_itens">
+            <tbody id="cart-items"></tbody>
+        </table>
+        <form action="?acao=fim" method="post">
+            <tbody>
+                <?php
 
-    <div class="navbar">
-        <h1>Lojinha de musica</h1>
-        <form id="search-form">
-            <input type="text" id="search-bar" placeholder="Buscar" name="nome">
-            <input type="submit" value="Buscar">
-            <a href="perfil_Page.php"><input type="button" value="Perfil"></a>
-            <a href="carrinho.php"><input type="button" value="Carrinho Usuario"></a>
-        </form>
-        <div>
+                $totalCarrinho = 0;
+                if (count($_SESSION['carrinho']) == 0) {
+                    echo "Não há produto no carrinho";
+
+                    echo "<br>";
+                } else {
+                    foreach ($_SESSION['carrinho'] as $id => $qtd) {
+                        echo "<div class= product_division>";
+                        $usuario->buscar2_0($id);
+                        $var = $usuario->buscarPreco($id);
+                        $valorTotalItem = (double) $var * (int) $qtd;
+                        $totalCarrinho += $valorTotalItem;
+                        
+                        echo "Quantidade: <input type='number' name='prod[" . $id . "]' value='" . $qtd . "' onchange='validarQuantidade(this);'>";
+                        echo '<br>';
+                        echo '<br>';
+                        echo '<button type="" ><a href ="?acao=del&id=' . $id . '">Remover Item</a></button>';
+                        echo "</div>";
+                        echo '<br>';
+                        echo '<br>';
+                        
+
+                    }
+                    echo "Valor total do carrinho: $" . number_format($totalCarrinho,2,".","") ."";
+                    echo '<br>';
+
+                 
 
 
-
-
-            <?php
-            include 'Main.php';
-            $usuario = new Actions();
-            if (!isset($_GET['nome'])) {
-
-            } else {
-                $nome = $_GET['nome'];
-                $usuario->buscarNomeProduto($nome);
             }
+                ?>
 
-            ?>
-        </div>
+
+
+
+
+
+
+
+
+
+
+            </tbody>
+            <tfoot>
+                <button class="clear-cart-button" type="button">Atualizar Carrinho</button>
+                <td colspan="5"><a href="index.php"><input class="clear-cart-button" type="button"
+                 value="Continuar comprando"></a></td>
+                <td colspan="5"><button class="clear-cart-button" type="submit">Finalizar</button></td>
+                </tr>
+            </tfoot>
+        </form>
     </div>
 
-
-    <?php
-    $usuario = new Actions();
-    $produtos = $usuario->buscar2_0();
-    if ($produtos !== null) {
-        foreach ($produtos as $veiculo) {
-            echo '<h2>' . $veiculo['product_name'] . '</h2>'; 
-            echo str_replace('<img', '<img class="imagem-pequena"', $veiculo['product_img']);// O campo 'Imagem' já contém a tag <img> completa
-            echo '<p>Preço: ' . number_format($veiculo['product_unit_price'], 2, ',', '.'). '</p>';
-            echo "<a class='ver-detalhes' href='DetalhesVeiculos.php?id=" . $veiculo['ID'] . "'>VER DETALHES</a>";
+    <script>
+        function validarQuantidade(input) {
+            if (input.value < 0) {
+                input.value = 0;
+            }
         }
-    }
-    
-    
-    ?>
-
-
-    ?>
+    </script>
 
 
 
-    </div>
-
-    <div class="footer">
-        &copy; 2023 Lojinha de musica. Todos os direitos reservados.
-    </div>
-
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

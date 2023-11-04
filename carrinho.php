@@ -105,71 +105,15 @@ if (isset($_GET['acao'])) {
 
 <head>
     <title>Carrinho de Compras</title>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .product {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .add-to-cart-button {
-            margin-left: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            font-size: 20px;
-
-        }
-
-        .clear-cart-button {
-            background-color: goldenrod;
-            color: white;
-            padding: 10px 20px;
-            font-size: 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .clear-cart-button:hover {
-            background-color: blue;
-            color: white;
-            opacity: 40%;
-            transition: 0.8s;
-        }
-    </style>
+   <link rel="stylesheet" href="Style.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="container">
+    <div class="container_cart">
         <h1>Carrinho de Compras</h1>
-        <table>
-
+        <table class="table_cart_itens">
             <tbody id="cart-items"></tbody>
         </table>
         <form action="?acao=fim" method="post">
@@ -183,19 +127,20 @@ if (isset($_GET['acao'])) {
                     echo "<br>";
                 } else {
                     foreach ($_SESSION['carrinho'] as $id => $qtd) {
-
-                        $usuario->buscarNoCarrinho($id);
+                        echo "<div class= product_division>";
+                        $usuario->buscar2_0($id);
                         $var = $usuario->buscarPreco($id);
                         $valorTotalItem = (double) $var * (int) $qtd;
                         $totalCarrinho += $valorTotalItem;
-                        // (double)$totalCarrinho += (double)$var;
-                        echo "<br>";
+                        
                         echo "Quantidade: <input type='number' name='prod[" . $id . "]' value='" . $qtd . "' onchange='validarQuantidade(this);'>";
                         echo '<br>';
                         echo '<br>';
-                        echo '<a href ="?acao=del&id=' . $id . '">Remover</a>';
+                        echo '<button type="" ><a href ="?acao=del&id=' . $id . '">Remover Item</a></button>';
+                        echo "</div>";
                         echo '<br>';
                         echo '<br>';
+                        
 
                     }
                     echo "Valor total do carrinho: $" . number_format($totalCarrinho,2,".","") ."";
@@ -205,8 +150,6 @@ if (isset($_GET['acao'])) {
 
 
             }
-
-
                 ?>
 
 
@@ -221,17 +164,12 @@ if (isset($_GET['acao'])) {
 
             </tbody>
             <tfoot>
-
-
-                <button class="clear-cart-button" type="submit">Atualizar Carrinho</button>
-
+                <button class="clear-cart-button" type="button">Atualizar Carrinho</button>
                 <td colspan="5"><a href="index.php"><input class="clear-cart-button" type="button"
-                            value="Continuar comprando"></a></td>
+                 value="Continuar comprando"></a></td>
                 <td colspan="5"><button class="clear-cart-button" type="submit">Finalizar</button></td>
                 </tr>
             </tfoot>
-
-
         </form>
     </div>
 
@@ -245,7 +183,12 @@ if (isset($_GET['acao'])) {
 
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
