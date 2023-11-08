@@ -9,29 +9,17 @@
     <title>Document</title>
 </head>
 <body>
-
-<div class="container">
-    <h3>Informações do Perfil</h3>
-    <br>
-<?php
-include 'Main.php';
-session_start();
+    <?php
 
 
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit();
-}
-$usuario = new Actions();
-$user_id = $_SESSION['usuario'];
-$usuario->buscarUsuarioPorId($user_id);
-echo "<br>";
-echo '<a class="btn btn-warning " href="logout.php">Logout</a>';
+    include "Main.php";
+    session_start();
+    $usuario = new Actions();
+    $usuario->pegarPedidos();
 
 
 
-?>
-</div>
+    ?>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -41,6 +29,3 @@ echo '<a class="btn btn-warning " href="logout.php">Logout</a>';
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-

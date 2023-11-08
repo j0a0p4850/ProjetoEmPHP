@@ -34,15 +34,17 @@ class Actions
     }
 
 
-    public function alterar($nome, $email, $senha, $id)
-    {
-        $sql = "UPDATE `tb_user` SET"
-            . " `nome` = '$nome', "
-            . "`email` = '$email', "
-            . "`senha` = '$senha' "
-            . "WHERE `usuario`.`id_usuario` = $id;";
-        $this->executarSQL($sql, "alteração");
-    }
+    // public function alterar($nome, $email, $senha, $id)
+    // {
+    //     $sql = "UPDATE `tb_user` SET"
+    //         . " `nome` = '$nome', "
+    //         . "`email` = '$email', "
+    //         . "`senha` = '$senha' "
+    //         . "WHERE `usuario`.`id_usuario` = $id;";
+    //     $this->executarSQL($sql, "alteração");
+    // }
+
+
     public function incluirTabelaItensRequest($id, $qntd, $user_id)
     {
         // Inserir registro
@@ -67,7 +69,7 @@ class Actions
             echo "Erro na $msg do registro: " . $conecta->error . "<br>";
         }
         $conexao->desconectar();
-        
+
     }
 
     public function buscar()
@@ -139,9 +141,9 @@ class Actions
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">'. $linha['product_name'] . '</h5>
+                                <h5 class="card-title">' . $linha['product_name'] . '</h5>
                                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <h2 class="card-text"> R$ '.$linha['product_unit_price'].'</h2>
+                                <h2 class="card-text"> R$ ' . $linha['product_unit_price'] . '</h2>
                             </div>
                         </div>
                     </div>
@@ -189,9 +191,9 @@ class Actions
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Nome: " . $linha["user_name"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a></button>' . "<br>";
-                echo "Email: " . $linha["email"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=email">Editar Email</a></button>' . "<br>";
-                echo "CEP: " . $linha["user_CEP"] . "<br>" . '<button type="button" class="btn btn-light"><a href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a></button>' . "<br>";
+                echo "<h5>Nome: " . $linha["user_name"] . "</h5>" . '<a class="btn btn-info " href="atualizarDadosPerfil.php?campo=nome">Editar Nome</a>' . "<br>" . "<br>";
+                echo "<h5>Email: " . $linha["email"] . "</h5>" . ' <a class="btn btn-info " href="atualizarDadosPerfil.php?campo=email">Editar Email</a>' . "<br>" . "<br>";
+                echo "<h5>CEP: " . $linha["user_CEP"] . "</h5>" . ' <a class="btn btn-info " href="atualizarDadosPerfil.php?campo=cep">Editar CEP</a>' . "<br>" . "<br>";
 
                 //     echo "Nome: " . $linha["user_name"] . "<br>" . '<a href="teste.php?campo=nome">Editar Nome</a>' . "<br>";
                 //     echo "Email: " . $linha["email"] . "<br>" . '<a href="teste.php?campo=email">Editar Email</a>' . "<br>";
@@ -232,22 +234,42 @@ class Actions
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT id_product, product_name, product_unit_price, product_description FROM tb_product WHERE id_product like '$id'";
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price, product_description FROM tb_product WHERE id_product like '$id'";
         $resultado = $conecta->query($sql);
         if ($resultado->num_rows > 0) {
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
 
-                echo "Name: " . $linha["product_name"] . "<br>" . "Preço: " . $linha["product_unit_price"] . "<br>"
-                    . $linha["product_description"] . "<br>";
+                echo '
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                        ' . "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">' . $linha['product_name'] . '</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <h2 class="card-text"> R$ ' . $linha['product_unit_price'] . '</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ';
+
+
+                // echo "Name: " . $linha["product_name"] . "<br>" . "Preço: " . $linha["product_unit_price"] . "<br>"
+                //     . $linha["product_description"] . "<br>";
 
                 if (isset($_SESSION['usuario']) && $_SESSION['usuario'] == true) {
                     // echo '<button> <a href=".php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>';
-                    
-                    echo '<button> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>'. '<br>'. '<br>';
+                    echo '<a class="btn btn-success" href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a>     ';
+                    //echo '<button class="btn btn-success> <a href="carrinho.php?acao=add&id=' . $linha['id_product'] . '">Comprar</a></button>'. '<br>'. '<br>';
                 } else {
-                    echo 'Faça login para adicionar ao carrinho.';
-                    echo '<button> <a href="login.php?">Ir Para login</a></button>';
+
+                    echo 'Faça login para adicionar ao carrinho.' . '<br>';
+                    echo '<a class="btn btn-danger" href="login.php?">Ir Para login</a>';
                 }
 
             }
@@ -272,16 +294,25 @@ class Actions
         if ($resultado->num_rows > 0) {
 
             while ($linha = $resultado->fetch_assoc()) {
-                echo "Name: " . $linha["user_name"] . "<br>" . "Comentario: " . $linha["client_comment_avaliation"] . "<br>" . "<br>";
+
+                echo "Name: " . $linha["user_name"] . "<br>" . "Comentario: " . $linha["client_comment_avaliation"] . "<br>";
+
+                if (isset($_SESSION['usuario'])) {
+                    if ($_SESSION['usuario'] == $linha['id_user']) {
+                        echo "<a class='btn btn-danger' href='excluirComentario.php?comentario_id={$linha['id_avaliacao']}'>Excluir</a>";
+                        echo "<br>";
+                        echo "<br>";
 
 
-                if ($_SESSION['usuario'] == $linha['id_user']) {
-                    echo "<a href='excluirComentario.php?comentario_id={$linha['id_avaliacao']}'>Excluir</a><br>";
+                    } else {
 
+                    }
                 } else {
 
                 }
             }
+
+
         }
 
 
@@ -329,9 +360,12 @@ class Actions
             // saída dos dados
             while ($linha = $resultado->fetch_assoc()) {
 
-                "<br>";
-                echo "Nome: " . $linha["product_name"] . "<br>";
-                echo 'Preco do produto : R$ ' . number_format($linha['product_unit_price'], 2, ',', '.') . "<br>";
+                echo '<div>
+                 <ul>
+                    <li>Nome: ' . $linha["product_name"] . '</li>
+                    <li>"Preco do produto : R$ ' . number_format($linha['product_unit_price'], 2, ',', '.') . '</li>
+                    </ul>
+                </div>"';
 
             }
         } else {
@@ -353,7 +387,7 @@ class Actions
 
 
 
-        $sql = "SELECT
+        $sql = "SELECT p.product_img, 
         r.id_request AS id_do_pedido,
         r.request_total_value AS Valor_Total_Do_Pedido,
         p.product_name AS Nome_Do_Produto,
@@ -380,44 +414,47 @@ class Actions
             LIMIT 1
         );";
 
-
-        //     $sql = "SELECT
-        //     r.id_request AS id_do_pedido,
-        //     r.request_total_value AS Valor_Total_Do_Pedido,
-        //     p.product_name AS Nome_Do_Produto,
-        //     ir.quantity_itens_requested AS Quantidade_pedida_produto,
-        //     p.product_description AS Descrição_produto,
-        //     ir.id_itens_request AS ID_Do_Item,
-        //     p.id_product AS ID_Do_Produto,
-        //     p.product_unit_price AS Preço_Unitário,
-        //     ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
-        //     SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
-        // FROM
-        //     tb_request r
-        // INNER JOIN
-        //     tb_itens_request ir ON r.id_request = ir.id_request
-        // INNER JOIN
-        //     tb_product p ON ir.id_product = p.id_product
-        // WHERE
-        //     r.id_user = ir.id_user;";
-
         $resultado = $conecta->query($sql);
 
         if ($resultado->num_rows > 0) {
             while ($linha = $resultado->fetch_assoc()) {
-                $var = $linha['Total_Do_Pedido'];
-                echo "<br>";
-                echo "Produto: ".$linha['Nome_Do_Produto'] . "<br>";
 
-                echo "Quantidade Pedida: ". $linha['Quantidade_pedida_produto'] . "<br>";
+                echo '
+                <div class="card mb-3 " style="max-width: 540px; ">
+                    <div class="row g-0 ">
+                        <div class="col-md-4">
+                        ' . "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['Nome_Do_Produto'] . "' />" . '
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h2 class="card-title">' . $linha['Nome_Do_Produto'] . '</h2>
+                                <h3 class="card-text"> Preço: R$ ' . $linha['Preço_Unitário'] . '</h3>
+                                <h4 class="card-text"> Quantidade: ' . $linha['Quantidade_pedida_produto'] . '</h4>
+                                <h6 class="card-text">Descrição: ' . $linha['Descrição_produto'] . '</h6>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                echo "Descrição do Produto: ".$linha['Descrição_produto'] . "<br>";
+                ';
 
-                echo "Preço: R$ " . $linha['Preço_Unitário'] . "<br>";
+                //     $var = $linha['Total_Do_Pedido'];
+                //     echo "<br>";
+                //     echo "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['Nome_Do_Produto'] . "' />";
+                //     echo "<br>";
+                //     echo "Produto: ".$linha['Nome_Do_Produto'] . "<br>";
 
+                //     echo "Quantidade Pedida: ". $linha['Quantidade_pedida_produto'] . "<br>";
+
+                //     echo "Descrição do Produto: ".$linha['Descrição_produto'] . "<br>";
+
+                //     echo "Preço: R$ " . $linha['Preço_Unitário'] . "<br>";
+
+                // }
+                // echo "<br>";
+                //echo "Total do pedido: R$ " . $var . "<br>";
             }
-            echo "<br>";
-            echo "Total do pedido: R$ " . $var . "<br>";
         }
 
 
@@ -557,13 +594,16 @@ class Actions
         if ($resultado->num_rows > 0) {
             while ($linha = $resultado->fetch_assoc()) {
                 $var = $linha['Total_Do_Pedido'];
-            }
 
-            return $var;
+            }
+            return $var; 
+
         }
 
 
         $conexao->desconectar();
+
+        ;
     }
 
     public function pegarNome()
@@ -692,20 +732,219 @@ class Actions
         $sql = "SELECT MAX(id_request) as ultimo_pedido FROM tb_request where id_user = '$id_usuario'";
         $resultado = $conecta->query($sql);
 
-        if($linha = $resultado->fetch_assoc()) {
+        if ($linha = $resultado->fetch_assoc()) {
             $id_ultimo_pedido = $linha['ultimo_pedido'];
-        $sql = "DELETE FROM tb_itens_request WHERE id_request = '$id_ultimo_pedido';";
-        $conecta->query($sql);
-        $sql = "DELETE FROM tb_request WHERE id_request = '$id_ultimo_pedido';";
-        $this->executarSQL($sql, "Cancelamento feito");
-        echo "Por favor clique no botao de Pagina inicial";
-            }
+            $sql = "DELETE FROM tb_itens_request WHERE id_request = '$id_ultimo_pedido';";
+            $conecta->query($sql);
+            $sql = "DELETE FROM tb_request WHERE id_request = '$id_ultimo_pedido';";
+            $this->executarSQL($sql, "Cancelamento feito");
+            echo "Por favor clique no botao de Pagina inicial";
+        }
         $conexao->desconectar();
 
     }
 
+    
 
+    public function pegarPedidos()
+{
+    $conexao = new ConexaoBD();
+    $conecta = $conexao->conectar();
+
+    $id_usuario = $_SESSION['usuario'];
+    $sql = "SELECT 
+        R.id_request, 
+        R.request_total_value, 
+        GROUP_CONCAT(P.product_name) AS product_names,
+        R.request_total_value
+    FROM 
+        tb_request R
+    INNER JOIN 
+        tb_itens_request IR ON R.id_request = IR.id_request
+    INNER JOIN 
+        tb_product P ON IR.id_product = P.id_product
+    WHERE 
+        R.id_user = $id_usuario
+    GROUP BY R.id_request";
+    $resultado = $conecta->query($sql);
+
+    if ($resultado->num_rows > 0) {
+        while ($linha = $resultado->fetch_assoc()) {
+            echo '
+            <div class="card mb-3" style="max-width: 600px;">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"> Numero do pedido: ' . $linha['id_request'] . '</h5>
+                            <br>
+                            <h5 class="card-text">Produtos existentes nele: ' . $linha['product_names'] . '</h5>
+                            <br>
+                            <h5 class="card-text"> Valor do pedido: R$ ' . $linha['request_total_value'] . '</h5>
+                        </div>
+                        <a class="btn btn-outline-primary" href="teste.php?id= '.$linha['id_request'].'">Conferir pedido</a>
+                    </div>
+                </div>
+            </div>
+            ';
+        }
+
+        $conexao->desconectar();
+    }
 }
+
+public function buscarPedidoId($id)
+    {
+
+        $teste = $_SESSION['usuario'];
+
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+
+
+        $sql = "SELECT p.product_img, 
+        r.id_request AS id_do_pedido,
+        r.request_total_value AS Valor_Total_Do_Pedido,
+        p.product_name AS Nome_Do_Produto,
+        ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        p.product_description AS Descrição_produto,
+        ir.id_itens_request AS ID_Do_Item,
+        p.id_product AS ID_Do_Produto,
+        p.product_unit_price AS Preço_Unitário,
+        ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+    FROM
+        tb_request r
+    INNER JOIN
+        tb_itens_request ir ON r.id_request = ir.id_request
+    INNER JOIN
+        tb_product p ON ir.id_product = p.id_product
+    WHERE
+ r.id_request = $id;";
+
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+
+                echo '
+                <div class="card mb-3 " style="max-width: 540px; ">
+                    <div class="row g-0 ">
+                        <div class="col-md-4">
+                        ' . "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['Nome_Do_Produto'] . "' />" . '
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h2 class="card-title">' . $linha['Nome_Do_Produto'] . '</h2>
+                                <h3 class="card-text"> Preço: R$ ' . $linha['Preço_Unitário'] . '</h3>
+                                <h4 class="card-text"> Quantidade: ' . $linha['Quantidade_pedida_produto'] . '</h4>
+                                <h6 class="card-text">Descrição: ' . $linha['Descrição_produto'] . '</h6>
+                                <h6 class="card-text">Descrição: ' . $linha['Total_Do_Pedido'] . '</h6>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ';
+
+            }
+        }
+
+
+        $conexao->desconectar();
+    }
+
+    public function buscarTotalPriceEsp()
+    {
+
+        $teste = $_SESSION['usuario'];
+
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT
+        r.id_request AS id_do_pedido,
+        r.request_total_value AS Valor_Total_Do_Pedido,
+        p.product_name AS Nome_Do_Produto,
+        ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        p.product_description AS Descrição_produto,
+        ir.id_itens_request AS ID_Do_Item,
+        p.id_product AS ID_Do_Produto,
+        p.product_unit_price AS Preço_Unitário,
+        ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+    FROM
+        tb_request r
+    INNER JOIN
+        tb_itens_request ir ON r.id_request = ir.id_request
+    INNER JOIN
+        tb_product p ON ir.id_product = p.id_product
+    WHERE
+        r.id_user = ir.id_user
+        AND r.id_request = (
+            SELECT id_request
+            FROM tb_request
+            WHERE id_user = $teste
+            ORDER BY time_do_pedido DESC
+            LIMIT 1
+        );";
+
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['Total_Do_Pedido'];
+
+            }
+
+            echo "Total pedido: ". $var;
+        }
+
+
+        $conexao->desconectar();
+
+        
+    }
+
+    public function buscarProdutosClassCorda()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'C';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+
+
+
+
+    }
+
 
 
 

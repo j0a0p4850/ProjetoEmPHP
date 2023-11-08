@@ -136,7 +136,7 @@ if (isset($_GET['acao'])) {
                         echo "Quantidade: <input type='number' name='prod[" . $id . "]' value='" . $qtd . "' onchange='validarQuantidade(this);'>";
                         echo '<br>';
                         echo '<br>';
-                        echo '<button type="" ><a href ="?acao=del&id=' . $id . '">Remover Item</a></button>';
+                        echo '<button type="" class="btn btn-danger"><a class="btn btn-danger" href ="?acao=del&id=' . $id . '">Remover Item</a></button>';
                         echo "</div>";
                         echo '<br>';
                         echo '<br>';
@@ -164,7 +164,7 @@ if (isset($_GET['acao'])) {
 
             </tbody>
             <tfoot>
-                <button class="clear-cart-button" type="button">Atualizar Carrinho</button>
+                <button id="atualizar-carrinho" class="clear-cart-button" type="button">Atualizar Carrinho</button>
                 <td colspan="5"><a href="index.php"><input class="clear-cart-button" type="button"
                  value="Continuar comprando"></a></td>
                 <td colspan="5"><button class="clear-cart-button" type="submit">Finalizar</button></td>
@@ -180,6 +180,25 @@ if (isset($_GET['acao'])) {
             }
         }
     </script>
+
+    <script>
+    document.getElementById('atualizar-carrinho').addEventListener('click', function () {
+        const quantidadeInputs = document.querySelectorAll('input[name^="prod["]');
+        quantidadeInputs.forEach(function (input) {
+            const id = input.name.match(/\[([0-9]+)\]/)[1];
+            const novaQuantidade = parseInt(input.value, 10);
+            
+            // Faça a lógica de atualização do carrinho com a nova quantidade.
+            // Você pode usar AJAX para atualizar as informações no servidor e na interface do usuário.
+
+            console.log('ID: ' + id + ', Nova Quantidade: ' + novaQuantidade);
+        });
+
+        // Adicione o código de atualização do carrinho aqui.
+        // Por exemplo, use AJAX para enviar as informações atualizadas ao servidor.
+    });
+</script>
+
 
 
 

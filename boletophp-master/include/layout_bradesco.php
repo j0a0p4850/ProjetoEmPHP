@@ -37,6 +37,8 @@
   <meta charset="UTF-8">
   <META http-equiv=Content-Type content=text/html charset=ISO-8859-1>
   <meta name="Generator" content="Projeto BoletoPHP - www.boletophp.com.br - Licença GPL" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <style type=text/css>
     .cp {  font: bold 10px Arial; color: black}
     .ti {
@@ -937,6 +939,8 @@
         <TD class=ct width=666><img height=1 src=imagens/6.png width=665 border=0></TD>
       </tr>
     </tbody>
+    <br>
+    <a class="btn btn-success" href="#">Arquivo pdf</a>
   </table>
 </BODY>
 

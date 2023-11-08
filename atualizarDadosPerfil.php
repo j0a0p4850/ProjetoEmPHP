@@ -1,3 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
 <?php
 include 'Main.php';
 session_start();
@@ -15,38 +32,59 @@ if (isset($_GET['campo'])) {
 
     switch ($campo) {
         case 'nome':
-            echo '<form action=" " method="POST" >
-            <lable>Editar Nome</lable>
-            <input type="text" name="nome">
-            <input type="submit" value="Editar Nome">
-    </form>
-';
+         
+            echo '
+            <div class="container">
+                <form  method="POST">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input  type="submit" value="Atualizar Dado">
+                    </div>
+                </form>
+            </div>';
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $nome = $_POST['nome'];
-        $usuario-> alterar_Nome_Usuario($nome);
-    }
-            break;
-        case 'email':
-            echo '<form action=" " method="POST">
-                    <lable>Editar Email</lable>
-                    <input type="text" name="email">
-                    <input type="submit" value="Editar Email">
-            </form>';
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                $email = $_POST['email'];
-                $usuario-> alterar_Email($email);
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $nome = $_POST['nome'];
+                $usuario->alterar_Nome_Usuario($nome);
             }
             break;
-            case 'cep':
-                echo '<form action=" " method="POST">
-                        <label>Editar CEP</label>
-                        <input type="text" name="CEP" id="CEP" pattern="\d{5}-\d{3}" title="Digite um CEP válido no formato 00000-000" required>
-                        <input type="submit" value="Editar CEP">
-                      </form>';
-            
-                echo '<script>
+        case 'email':
+           echo '
+            <div class="container">
+                <form  method="POST">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input  type="submit" value="Atualizar Dado">
+                    </div>
+                </form>
+            </div>';
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $email = $_POST['email'];
+                $usuario->alterar_Email($email);
+            }
+            break;
+        case 'cep':
+            echo '
+            <div class="container">
+                <form  method="POST">
+                    <div class="form-group">
+                        <label for="CEP">CEP:</label>
+                        <input type="text" id="CEP" name="CEP" required>
+                    </div>
+                    <div class="form-group">
+                        <input  type="submit" value="Atualizar Dado">
+                    </div>
+                </form>
+            </div>';
+
+            echo '<script>
                         document.getElementById("CEP").addEventListener("input", function (e) {
                             let value = e.target.value;
                             value = value.replace(/\D/g, ""); 
@@ -59,17 +97,17 @@ if (isset($_GET['campo'])) {
                             e.target.value = value;
                         });
                       </script>';
-            
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $cep = $_POST['CEP'];
-                    $usuario->alterar_CEP_Usuario($cep);
-                }
-                break;
-            
-                
-            
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $cep = $_POST['CEP'];
+                $usuario->alterar_CEP_Usuario($cep);
+            }
+            break;
+
+
+
         default:
-            
+
             break;
     }
 }
