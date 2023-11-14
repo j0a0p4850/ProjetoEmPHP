@@ -22,6 +22,9 @@
                 <input type="password" id="senha" name="senha" required>
             </div>
             <div class="form-group">
+                <h7>Ainda não conta? <a href="cadastro.php" class="cadastro_link">Clique aqui</a></h7>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Entrar">
             </div>
         </form>

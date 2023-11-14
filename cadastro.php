@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label for="CEP">CEP:</label>
-                <input type="text" id="CEP" name="CEP" required pattern="\d{4}-\d{3}">
+                <input type="text" id="CEP" name="CEP" >
                 
             </div>
             <div class="form-group">
@@ -44,6 +44,8 @@
             $endereco = $_POST['CEP'];
             
            $usuario->incluir($name, $email, $password, $endereco);
+
+           header('Location: login.php');
            
            
            }

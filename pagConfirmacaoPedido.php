@@ -35,6 +35,8 @@
 </form>';
 
 
+
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $usuario->cancelarPedido();
             echo ' <br>';

@@ -256,5 +256,15 @@ th {
     color: white;
 }
 
+.cadastro_link{
+    text-decoration: none;
+    color: #1a73e8;
+}
+.cadastro_link:hover{
+    text-decoration: underline;
+    color: #1b5198;
+    transition: 3ms;
+}
+
 
 

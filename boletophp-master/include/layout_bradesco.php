@@ -1,31 +1,3 @@
-<?php
-// +----------------------------------------------------------------------+
-// | BoletoPhp - Vers�o Beta                                              |
-// +----------------------------------------------------------------------+
-// | Este arquivo est� dispon�vel sob a Licen�a GPL dispon�vel pela Web   |
-// | em http://pt.wikipedia.org/wiki/GNU_General_Public_License           |
-// | Voc� deve ter recebido uma c�pia da GNU Public License junto com     |
-// | esse pacote; se n�o, escreva para:                                   |
-// |                                                                      |
-// | Free Software Foundation, Inc.                                       |
-// | 59 Temple Place - Suite 330                                          |
-// | Boston, MA 02111-1307, USA.                                          |
-// +----------------------------------------------------------------------+
-
-// +----------------------------------------------------------------------+
-// | Originado do Projeto BBBoletoFree que tiveram colabora��es de Daniel |
-// | William Schultz e Leandro Maniezo que por sua vez foi derivado do	  |
-// | PHPBoleto de Jo�o Prado Maia e Pablo Martins F. Costa				  |
-// | 																	  |
-// | Se vc quer colaborar, nos ajude a desenvolver p/ os demais bancos :-)|
-// | Acesse o site do Projeto BoletoPhp: www.boletophp.com.br             |
-// +----------------------------------------------------------------------+
-
-// +----------------------------------------------------------------------+
-// | Equipe Coordena��o Projeto BoletoPhp: <boletophp@boletophp.com.br>   |
-// | Desenvolvimento Boleto Bradesco: Ramon Soares						            |
-// +----------------------------------------------------------------------+
-?>
 
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.0 Transitional//EN'>
 <HTML>
@@ -77,25 +49,26 @@
   <table width=666 cellspacing=0 cellpadding=0 border=0>
     <tr>
       <td valign=top class=cp>
-        <DIV ALIGN="CENTER">Instru��es
-          de Impress�o</DIV>
+        <DIV ALIGN="CENTER">Instrucoes
+          de Impressao</DIV>
       </TD>
     </TR>
     <TR>
       <TD valign=top class=cp>
         <DIV ALIGN="left">
           <p>
-            <li>Imprima em impressora jato de tinta (ink jet) ou laser em qualidade normal ou alta (N�o use modo
-              econ�mico).<br>
-            <li>Utilize folha A4 (210 x 297 mm) ou Carta (216 x 279 mm) e margens m�nimas � esquerda e � direita do
-              formul�rio.<br>
-            <li>Corte na linha indicada. N�o rasure, risque, fure ou dobre a regi�o onde se encontra o c�digo de
+            <li>Imprima em impressora jato de tinta (ink jet) ou laser em qualidade normal ou alta (Nao use modo
+              economico).<br>
+            <li>Utilize folha A4 (210 x 297 mm) ou Carta (216 x 279 mm) e margens minimas a esquerda e a direita do
+              formulario.<br>
+            <li>Corte na linha indicada. Nao rasure, risque, fure ou dobre a regiao onde se encontra o codigo de
               barras.<br>
-            <li>Caso n�o apare�a o c�digo de barras no final, clique em F5 para atualizar esta tela.
-            <li>Caso tenha problemas ao imprimir, copie a seq�encia num�rica abaixo e pague no caixa eletr�nico ou no
+              <li>Tire Print do boleto para poder utilizar<br>
+            <li>Caso nao apareca o codigo de barras no final, clique em F5 para atualizar esta tela.
+            <li>Caso tenha problemas ao imprimir, copie a sequencia numerica abaixo e pague no caixa eletronico ou no
               internet banking:<br><br>
               <span class="ld2">
-                &nbsp;&nbsp;&nbsp;&nbsp;Linha Digit�vel: &nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;Linha Digitavel: &nbsp;
                 <?php echo $dadosboleto["linha_digitavel"] ?><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;Valor: &nbsp;&nbsp;R$
                 <?php echo $dadosboleto["valor_boleto"] ?><br>
@@ -284,7 +257,7 @@
           Mora / Multa</td>
         <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
         <td class=ct valign=top width=113 height=13>(+)
-          Outros acr�scimos</td>
+          Outros acrescimos</td>
         <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
         <td class=ct valign=top width=180 height=13>(=)
           Valor cobrado</td>
@@ -341,8 +314,8 @@
         <td class=ct width=7 height=12></td>
         <td class=ct width=564>Demonstrativo</td>
         <td class=ct width=7 height=12></td>
-        <td class=ct width=88>Autentica��o
-          mec�nica</td>
+        <td class=ct width=88>Autenticação
+          mecanica</td>
       </tr>
       <tr>
         <td width=7></td>
@@ -418,8 +391,8 @@
       </tr>
       <tr>
         <td class=cp valign=top width=7 height=12><img height=12 src=imagens/1.png width=1 border=0></td>
-        <td class=cp valign=top width=472 height=12>Pag�vel
-          em qualquer Banco at� o vencimento</td>
+        <td class=cp valign=top width=472 height=12>Pagavel
+          em qualquer Banco até o vencimento</td>
         <td class=cp valign=top width=7 height=12><img height=12 src=imagens/1.png width=1 border=0></td>
         <td class=cp valign=top align=right width=180 height=12>
           <span class="campo">
@@ -441,7 +414,7 @@
         <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
         <td class=ct valign=top width=472 height=13>Cedente</td>
         <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
-        <td class=ct valign=top width=180 height=13>Ag�ncia/C�digo
+        <td class=ct valign=top width=180 height=13>Agencia/Código
           cedente</td>
       </tr>
       <tr>
@@ -478,7 +451,7 @@
         <td class=ct valign=top width=153 height=13>N<u>o</u>
           documento</td>
         <td class=ct valign=top width=7 height=13> <img height=13 src=imagens/1.png width=1 border=0></td>
-        <td class=ct valign=top width=62 height=13>Esp�cie
+        <td class=ct valign=top width=62 height=13>Especie
           doc.</td>
         <td class=ct valign=top width=7 height=13> <img height=13 src=imagens/1.png width=1 border=0></td>
         <td class=ct valign=top width=34 height=13>Aceite</td>
@@ -489,7 +462,7 @@
           processamento</td>
         <td class=ct valign=top width=7 height=13> <img height=13 src=imagens/1.png width=1 border=0></td>
         <td class=ct valign=top width=180 height=13>Nosso
-          n�mero</td>
+          número</td>
       </tr>
       <tr>
         <td class=cp valign=top width=7 height=12><img height=12 src=imagens/1.png width=1 border=0></td>
@@ -672,7 +645,7 @@
           </table>
         </td>
         <td valign=top width=468 rowspan=5>
-          <font class=ct>Instru��es
+          <font class=ct>Instruções
             (Texto de responsabilidade do cedente)</font><br><br><span class=cp>
             <FONT class=campo>
               <?php echo $dadosboleto["instrucoes1"]; ?><br>
@@ -726,7 +699,7 @@
               <tr>
                 <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
                 <td class=ct valign=top width=180 height=13>(-)
-                  Outras dedu��es</td>
+                  Outras </td>
               </tr>
               <tr>
                 <td class=cp valign=top width=7 height=12> <img height=12 src=imagens/1.png width=1 border=0></td>
@@ -802,7 +775,7 @@
               <tr>
                 <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
                 <td class=ct valign=top width=180 height=13>(+)
-                  Outros acr�scimos</td>
+                  Outros acrescimos</td>
               </tr>
               <tr>
                 <td class=cp valign=top width=7 height=12><img height=12 src=imagens/1.png width=1 border=0></td>
@@ -890,7 +863,7 @@
           </span>
         </td>
         <td class=ct valign=top width=7 height=13><img height=13 src=imagens/1.png width=1 border=0></td>
-        <td class=ct valign=top width=180 height=13>C�d.
+        <td class=ct valign=top width=180 height=13>Cod.
           baixa</td>
       </tr>
       <tr>
@@ -907,8 +880,8 @@
         <TD class=ct width=7 height=12></TD>
         <TD class=ct width=409>Sacador/Avalista</TD>
         <TD class=ct width=250>
-          <div align=right>Autentica��o
-            mec�nica - <b class=cp>Ficha de Compensa��o</b></div>
+          <div align=right>Autenticação
+            mecanica - <b class=cp>Ficha de Compensação</b></div>
         </TD>
       </TR>
       <TR>
@@ -940,7 +913,7 @@
       </tr>
     </tbody>
     <br>
-    <a class="btn btn-success" href="#">Arquivo pdf</a>
+    
   </table>
 </BODY>
 
