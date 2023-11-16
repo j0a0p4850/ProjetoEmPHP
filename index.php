@@ -26,7 +26,7 @@
   </style>
 
 
-  <title>Minha Loja Online</title>
+  <title>Maestro Academy - Pagina inicial</title>
 </head>
 
 <body>
@@ -40,27 +40,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Pagina inicial</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Blog</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Itens da loja
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="pagCordas.php">Instrumentos de Cordas</a></li>
-              <li><a class="dropdown-item" href="#">Instrumentos de percussão</a></li>
-              <li><a class="dropdown-item" href="#">Instrumento de Sopro</a></li>
-              <li><a class="dropdown-item" href="#">Instrumentos de Metal</a></li>
-              <li><a class="dropdown-item" href="#">Instrumentos de Madeira</a></li>
-              <li><a class="dropdown-item" href="#">Instrumentos de Eletrico</a></li>
+              <li><a class="dropdown-item" href="pagPercussao.php">Instrumentos de Percussão</a></li>
+              <li><a class="dropdown-item" href="pagSopro.php">Instrumento de Sopro</a></li>
+              <li><a class="dropdown-item" href="pagEletricos.php">Instrumentos de Eletrico</a></li>
+              
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="pagAcessorios.php">Acessorios</a></li>
+              <li><a class="dropdown-item" href="pagScores.php">Partituras e Livros</a></li>
             </ul>
           </li>
 
@@ -69,8 +63,6 @@
           <a href="perfil_Page.php"><input type="button" value="Perfil" class="btn btn-outline-success"></a>
           <a href="carrinho.php"><input type="button" value="Carrinho Usuario" class="btn btn-outline-success"></a>
           <a href="pagPedidos.php"><input type="button" value="Pedidos" class="btn btn-outline-success"></a>
-          <a href="Itens_OptionsPage.php"><input type="button" value="Todos os itens"
-              class="btn btn-outline-success"></a>
         </li>
       </div>
     </div>
@@ -84,7 +76,7 @@
     <div class="d-flex justify-content-evenly flex-wrap">
       <div class="card" style="width: 18rem;">
         <img src="imgs/cordas.webp" class="card-img-top" alt="...">
-        <div class="card-body">
+        <div class="card-body ">
           <h5 class="card-title">Cordas</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
@@ -97,7 +89,7 @@
           <h5 class="card-title">Sopro</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="pagSopro.php" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
       <div class="card" style="width: 18rem;">
@@ -106,7 +98,7 @@
           <h5 class="card-title">Eletricos</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="pagEletrico.php" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
       <div class="card" style="width: 18rem;">
@@ -115,17 +107,45 @@
           <h5 class="card-title">Percussão Harmonia</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="pagPercussao.php" class="btn btn-primary">Pagina de Percussão</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Pianos</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="pagPiano.php" class="btn btn-primary">Pagina de pianos</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Partituras E Livros</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="pagScore.php" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Acessorios</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="pagAcessorios.php" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
       
     </div>
   </div>
 
-  <article>
-    <div class="contai">
-      <h3 class = "classe">O que deseja saber sobre musica?</h3>
-      <div class="pa">
+  <article class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <h3 class="text-center">O que deseja saber sobre música?</h3>
+        <div class="text-center ">
         <p>Lorem ipsum dolor sit amet. 33 assumenda dolorem aut dolores quasi et esse odio qui doloremque neque et
           blanditiis laudantium et cupiditate incidunt non nisi impedit. Est doloribus ratione ex consequatur voluptatem
           a consequatur corporis ut praesentium fuga qui saepe natus vel consequuntur odit eum enim vitae. Quo galisum
@@ -156,6 +176,7 @@
         <p>Ea illum fuga sit facere natus At maxime temporibus eos maxime sapiente quo nemo similique non illo nobis est
           voluptate dolorum. Et voluptates voluptatibus est minus voluptas sit eveniet quis in voluptatem voluptatem aut
           laboriosam nesciunt. </p>
+          </div>
       </div>
     </div>
   </article>

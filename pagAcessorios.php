@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <title>Minha Loja Online</title>
+    <title>Maestro Academy - Eletricos</title>
 </head>
 
 <body>
@@ -22,25 +22,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Pagina inicial</a>
+          <a class="nav-link active" aria-current="page" href="index.php">Pagina inicial</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Blog</a>
-        </li>
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Itens da loja
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Instrumentos de Cordas</a></li>
-            <li><a class="dropdown-item" href="#">Instrumentos de percussão</a></li>
-            <li><a class="dropdown-item" href="#">Instrumento de Sopro</a></li>
-            <li><a class="dropdown-item" href="#">Instrumentos de Metal</a></li>
-            <li><a class="dropdown-item" href="#">Instrumentos de Madeira</a></li>
-            <li><a class="dropdown-item" href="#">Instrumentos de Eletrico</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
+              <li><a class="dropdown-item" href="pagCordas.php">Instrumentos de Cordas</a></li>
+              <li><a class="dropdown-item" href="pagPercussao.php">Instrumentos de Percussão</a></li>
+              <li><a class="dropdown-item" href="pagSopro.php">Instrumento de Sopro</a></li>
+              <li><a class="dropdown-item" href="pagEletricos.php">Instrumentos de Eletrico</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="pagAcessorios.php">Acessorios</a></li>
+              <li><a class="dropdown-item" href="pagScores.php">Partituras e Livros</a></li>
+            </ul>
         </li>
         
       </ul>
@@ -54,72 +53,14 @@
 </nav>
 
 
-
-
-        
-
-
-        
-
-
-
-
-
     </div>
-
-    <div id="carouselExampleCaptions" class="carousel slide">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="imgs/cordas.webp" class="d-block" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5 class="h5-index-page">First slide label</h5>
-        <p class="p-index-page">Some representative placeholder content for the first slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="imgs/piano.jpeg" class="d-block" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5 class="h5-index-page">Second slide label</h5>
-        <p class="p-index-page">Some representative placeholder content for the second slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="imgs/guitarra_fender.png" class="d-block" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5 class="h5-index-page">Third slide label</h5>
-        <p class="p-index-page">Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="imgs/violino.jpeg" class="d-block" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5 class="h5-index-page">Third slide label</h5>
-        <p class="p-index-page">Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
 
     <div class="container">
         <div class="d-flex justify-content-evenly flex-wrap">
             <?php
             include "Main.php";
             $usuario = new Actions();
-            $usuario->buscar2();
+            $usuario->buscarProdutosClassAcessorios();
 
 
             ?>

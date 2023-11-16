@@ -380,6 +380,7 @@ class Actions
     public function buscarTeste()
     {
 
+        $var = 0;
         $teste = $_SESSION['usuario'];
 
         $conexao = new ConexaoBD();
@@ -439,22 +440,11 @@ class Actions
 
                 ';
 
-                //     $var = $linha['Total_Do_Pedido'];
-                //     echo "<br>";
-                //     echo "<img class='card-img-to custom-image2' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['Nome_Do_Produto'] . "' />";
-                //     echo "<br>";
-                //     echo "Produto: ".$linha['Nome_Do_Produto'] . "<br>";
+                $var = $linha['Total_Do_Pedido'];
 
-                //     echo "Quantidade Pedida: ". $linha['Quantidade_pedida_produto'] . "<br>";
-
-                //     echo "Descrição do Produto: ".$linha['Descrição_produto'] . "<br>";
-
-                //     echo "Preço: R$ " . $linha['Preço_Unitário'] . "<br>";
-
-                // }
-                // echo "<br>";
-                //echo "Total do pedido: R$ " . $var . "<br>";
+                
             }
+            echo '<h3> Valor Total: R$ ' . $var . '</h3>';
         }
 
 
@@ -471,7 +461,7 @@ class Actions
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; // Use "=" instead of "like" to compare IDs
+        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; 
         $resultado = $conecta->query($sql);
 
         if ($resultado->num_rows > 0) {
@@ -557,6 +547,7 @@ class Actions
     public function buscarTotalPrice()
     {
 
+       
         $teste = $_SESSION['usuario'];
 
         $conexao = new ConexaoBD();
@@ -603,7 +594,6 @@ class Actions
 
         $conexao->desconectar();
 
-        ;
     }
 
     public function pegarNome()
@@ -771,17 +761,17 @@ class Actions
     if ($resultado->num_rows > 0) {
         while ($linha = $resultado->fetch_assoc()) {
             echo '
-            <div class="card mb-3" style="max-width: 600px;">
+            <div class="card mb-3" style="max-width: 450px;">
                 <div class="row g-0">
                     <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title"> Numero do pedido: ' . $linha['id_request'] . '</h5>
+                        <div class="card-body mg-right-auto">
+                              <h5 class="card-title"> Numero do pedido: ' . $linha['id_request'] . '</h5>
                             <br>
                             <h5 class="card-text">Produtos existentes nele: ' . $linha['product_names'] . '</h5>
                             <br>
                             <h5 class="card-text"> Valor do pedido: R$ ' . $linha['request_total_value'] . '</h5>
                         </div>
-                        <a class="btn btn-outline-primary" href="teste.php?id= '.$linha['id_request'].'">Conferir pedido</a>
+                        <a class="btn btn-outline-primary" href="visualizacaoPedido.php?id= '.$linha['id_request'].'">Conferir pedido</a>
                     </div>
                 </div>
             </div>
@@ -795,6 +785,7 @@ class Actions
 public function buscarPedidoId($id)
     {
 
+        $var = 0;
         $teste = $_SESSION['usuario'];
 
         $conexao = new ConexaoBD();
@@ -839,7 +830,6 @@ public function buscarPedidoId($id)
                                 <h3 class="card-text"> Preço: R$ ' . $linha['Preço_Unitário'] . '</h3>
                                 <h4 class="card-text"> Quantidade: ' . $linha['Quantidade_pedida_produto'] . '</h4>
                                 <h6 class="card-text">Descrição: ' . $linha['Descrição_produto'] . '</h6>
-                                <h6 class="card-text">Descrição: ' . $linha['Total_Do_Pedido'] . '</h6>
                                 
                             </div>
                         </div>
@@ -848,7 +838,11 @@ public function buscarPedidoId($id)
 
                 ';
 
+                $var = $linha['Total_Do_Pedido'];
+                
             }
+            echo "<h3> Valor Total: R$: ". $var. "</h3>";
+            
         }
 
 
@@ -938,7 +932,164 @@ public function buscarPedidoId($id)
 
         $conexao->desconectar();
     }
+    public function buscarProdutosClassSopro()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
 
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'S';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function buscarProdutosClassEletrico()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'E';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function buscarProdutosClassPercussao()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'P';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function buscarProdutosClassScores()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'L';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+    public function buscarProdutosClassAcessorios()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'A';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+               
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
 
 
 

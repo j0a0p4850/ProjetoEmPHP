@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="Style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <title>Maestro Academy - Eletricos</title>
+    <title>Maestro Academy - Pedido</title>
 </head>
 
 <body>
+
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary ">
   <div class="container-fluid">
@@ -24,7 +24,6 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.php">Pagina inicial</a>
         </li>
-        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Itens da loja
@@ -51,28 +50,43 @@
   </div>
 </nav>
 
-
-    </div>
-
     <div class="container">
-        <div class="d-flex justify-content-evenly flex-wrap">
-            <?php
-            include "Main.php";
-            $usuario = new Actions();
-            $usuario->buscarProdutosClassEletrico();
+        <?php
+        session_start();
+        include "Main.php";
+
+        echo "<h2>Detalhes do Pedido:</h2>";
+        $usuario = new Actions();
+        if (isset($_GET['id'])) {
+            $pedido_id = $_GET['id'];
+            $usuario->buscarPedidoId($pedido_id);
+        } else {
+            echo "Pedido não especificado. Volte e selecione um pedido para visualizar.";
+        }
+        
+        echo "<h4>Confirme a forma de pagamento desejada:</h4>";
+        echo '<a class="btn btn-info" href="boletophp-master/boleto_bradesco.php" target="_blank">Gerar Boleto</a>   ';
+        echo '<br>';
+        echo '<br>';
+        echo '<form action=" " method= "post">
+        <button class="btn btn-danger" type=submit>Cancelar Pedido</button>
+</form>';
 
 
-            ?>
-        </div>
+
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $usuario->cancelarPedido();
+            echo ' <br>';
+
+
+        }
+
+        ?>
+
+
     </div>
 
-
-
-    </div>
-
-    <div class="footer">
-        &copy; 2023 Lojinha de musica. Todos os direitos reservados.
-    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -81,35 +95,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            const searchInput = $('#search-input');
-            const searchResults = $('#search-results');
-
-            searchInput.on('input', function () {
-                const nome = searchInput.val();
-
-                if (nome.length > 1) { // Realize a busca após 3 caracteres, por exemplo
-                    $.ajax({
-                        url: 'index.php',
-                        method: 'GET',
-                        data: { nome: nome },
-                        success: function (data) {
-                            searchResults.html(data);
-                        },
-                        error: function (error) {
-                            console.error('Erro na busca: ' + error);
-                        }
-                    });
-                } else {
-                    searchResults.empty(); // Limpar resultados se a entrada for curta
-                }
-            });
-        });
-    </script>
-
 </body>
 
 </html>
