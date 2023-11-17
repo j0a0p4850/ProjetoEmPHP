@@ -1,0 +1,108 @@
+<?php
+// +----------------------------------------------------------------------+
+// | BoletoPhp - Vers�o Beta                                              |
+// +----------------------------------------------------------------------+
+// | Este arquivo est� dispon�vel sob a Licen�a GPL dispon�vel pela Web   |
+// | em http://pt.wikipedia.org/wiki/GNU_General_Public_License           |
+// | Voc� deve ter recebido uma c�pia da GNU Public License junto com     |
+// | esse pacote; se n�o, escreva para:                                   |
+// |                                                                      |
+// | Free Software Foundation, Inc.                                       |
+// | 59 Temple Place - Suite 330                                          |
+// | Boston, MA 02111-1307, USA.                                          |
+// +----------------------------------------------------------------------+
+
+// +----------------------------------------------------------------------+
+// | Originado do Projeto BBBoletoFree que tiveram colabora��es de Daniel |
+// | William Schultz e Leandro Maniezo que por sua vez foi derivado do	  |
+// | PHPBoleto de Jo�o Prado Maia e Pablo Martins F. Costa			       	  |
+// | 																	                                    |
+// | Se vc quer colaborar, nos ajude a desenvolver p/ os demais bancos :-)|
+// | Acesse o site do Projeto BoletoPhp: www.boletophp.com.br             |
+// +----------------------------------------------------------------------+
+
+// +----------------------------------------------------------------------+
+// | Equipe Coordena��o Projeto BoletoPhp: <boletophp@boletophp.com.br>   |
+// | Desenvolvimento Boleto Bradesco: Ramon Soares						            |
+// +----------------------------------------------------------------------+
+
+
+// ------------------------- DADOS DIN�MICOS DO SEU CLIENTE PARA A GERA��O DO BOLETO (FIXO OU VIA GET) -------------------- //
+// Os valores abaixo podem ser colocados manualmente ou ajustados p/ formul�rio c/ POST, GET ou de BD (MySql,Postgre,etc)	//
+
+// DADOS DO BOLETO PARA O SEU CLIENTE
+include __DIR__ . '/../Main.php';
+session_start();
+$usuario = new Actions();
+
+
+if (isset($_GET['id'])) {
+    $pedido_id = $_GET['id'];
+    $valor_cobrado = $usuario->buscarTotalPriceIdPedido($pedido_id);
+} else {
+    echo "<script>alert('Erro: o ID do pedido não foi especificado. Não é possível gerar o boleto.');</script>";
+
+    echo "<br><a href='/../index.php'><button>Voltar para a página inicial</button></a>";
+}
+
+$dias_de_prazo_para_pagamento = 5;
+$taxa_boleto = 2.95;
+$data_venc = date("d/m/Y", time() + ($dias_de_prazo_para_pagamento * 86400));
+//$valor_cobrado = $usuario->buscarTotalPrice(); // Valor - REGRA: Sem pontos na milhar e tanto faz com "." ou "," ou com 1 ou 2 ou sem casa decimal
+$valor_cobrado = str_replace(",", ".", $valor_cobrado);
+$valor_boleto = number_format((double) ($valor_cobrado + $taxa_boleto), 2, ',', '');
+
+$dadosboleto["nosso_numero"] = "13245768";  // Nosso numero sem o DV - REGRA: M�ximo de 11 caracteres!
+$dadosboleto["numero_documento"] = $dadosboleto["nosso_numero"];	// Num do pedido ou do documento = Nosso numero
+$dadosboleto["data_vencimento"] = $data_venc; // Data de Vencimento do Boleto - REGRA: Formato DD/MM/AAAA
+$dadosboleto["data_documento"] = date("d/m/Y"); // Data de emiss�o do Boleto
+$dadosboleto["data_processamento"] = date("d/m/Y"); // Data de processamento do boleto (opcional)
+$dadosboleto["valor_boleto"] = $valor_boleto; 	// Valor do Boleto - REGRA: Com v�rgula e sempre com duas casas depois da virgula
+
+// DADOS DO SEU CLIENTE
+$dadosboleto["sacado"] = "Nome do cliente: " . $usuario->pegarNome();
+$dadosboleto["endereco1"] = $usuario->pegarEnderecoPorCEP();
+$dadosboleto["endereco2"] = "CEP:  " . $usuario->pegarCEP();
+
+// INFORMACOES PARA O CLIENTE
+$dadosboleto["demonstrativo1"] = "Pagamento de Compra na Loja Maestro";
+$dadosboleto["demonstrativo2"] = "Mensalidade referente a nonon nonooon nononon<br>Taxa bancaria - R$ " . number_format($taxa_boleto, 2, ',', '');
+$dadosboleto["demonstrativo3"] = "BoletoPhp - http://www.boletophp.com.br";
+$dadosboleto["instrucoes1"] = "- Sr. Caixa, cobrar multa de 2% apos o vencimento";
+$dadosboleto["instrucoes2"] = "- Receber ate 10 dias apos o vencimento";
+$dadosboleto["instrucoes3"] = "- Em caso de dividas entre em contato conosco: MaestroA@gmail.com.br";
+$dadosboleto["instrucoes4"] = "&nbsp; Emitido pelo sistema Projeto BoletoPhp - www.boletophp.com.br";
+
+// DADOS OPCIONAIS DE ACORDO COM O BANCO OU CLIENTE
+$dadosboleto["quantidade"] = "001";
+$dadosboleto["valor_unitario"] = $valor_boleto;
+$dadosboleto["aceite"] = "";
+$dadosboleto["especie"] = "R$";
+$dadosboleto["especie_doc"] = "DS";
+
+
+// ---------------------- DADOS FIXOS DE CONFIGURA��O DO SEU BOLETO --------------- //
+
+
+// DADOS DA SUA CONTA - Bradesco
+$dadosboleto["agencia"] = "1100"; // Num da agencia, sem digito
+$dadosboleto["agencia_dv"] = "0"; // Digito do Num da agencia
+$dadosboleto["conta"] = "0102003"; 	// Num da conta, sem digito
+$dadosboleto["conta_dv"] = "4"; 	// Digito do Num da conta
+
+// DADOS PERSONALIZADOS - Bradesco
+$dadosboleto["conta_cedente"] = "0102003"; // ContaCedente do Cliente, sem digito (Somente N�meros)
+$dadosboleto["conta_cedente_dv"] = "4"; // Digito da ContaCedente do Cliente
+$dadosboleto["carteira"] = "06";  // C�digo da Carteira: pode ser 06 ou 03
+
+// SEUS DADOS
+$dadosboleto["identificacao"] = "BoletoPhp - Codigo Aberto de Sistema de Boletos";
+$dadosboleto["cpf_cnpj"] = "123.456.789-01";
+$dadosboleto["endereco"] = "Aguas Claras";
+$dadosboleto["cidade_uf"] = "Brasilia-DF";
+$dadosboleto["cedente"] = "Empresa MaestrosAcademy Ltda.";
+
+// N�O ALTERAR!
+include("include/funcoes_bradesco.php");
+include("include/layout_bradesco.php");
+?>

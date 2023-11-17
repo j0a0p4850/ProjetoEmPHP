@@ -442,7 +442,7 @@ class Actions
 
                 $var = $linha['Total_Do_Pedido'];
 
-                
+
             }
             echo '<h3> Valor Total: R$ ' . $var . '</h3>';
         }
@@ -461,7 +461,7 @@ class Actions
         $conexao = new ConexaoBD();
         $conecta = $conexao->conectar();
 
-        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id"; 
+        $sql = "SELECT id_product, product_unit_price FROM tb_product WHERE id_product = $id";
         $resultado = $conecta->query($sql);
 
         if ($resultado->num_rows > 0) {
@@ -547,7 +547,7 @@ class Actions
     public function buscarTotalPrice()
     {
 
-       
+
         $teste = $_SESSION['usuario'];
 
         $conexao = new ConexaoBD();
@@ -587,7 +587,7 @@ class Actions
                 $var = $linha['Total_Do_Pedido'];
 
             }
-            return $var; 
+            return $var;
 
         }
 
@@ -734,15 +734,18 @@ class Actions
 
     }
 
-    
+
 
     public function pegarPedidos()
-{
-    $conexao = new ConexaoBD();
-    $conecta = $conexao->conectar();
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
 
-    $id_usuario = $_SESSION['usuario'];
-    $sql = "SELECT 
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: login.php');
+        } else {
+            $id_usuario = $_SESSION['usuario'];
+            $sql = "SELECT 
         R.id_request, 
         R.request_total_value, 
         GROUP_CONCAT(P.product_name) AS product_names,
@@ -756,11 +759,11 @@ class Actions
     WHERE 
         R.id_user = $id_usuario
     GROUP BY R.id_request";
-    $resultado = $conecta->query($sql);
+            $resultado = $conecta->query($sql);
 
-    if ($resultado->num_rows > 0) {
-        while ($linha = $resultado->fetch_assoc()) {
-            echo '
+            if ($resultado->num_rows > 0) {
+                while ($linha = $resultado->fetch_assoc()) {
+                    echo '
             <div class="card mb-3" style="max-width: 450px;">
                 <div class="row g-0">
                     <div class="col-md-8">
@@ -771,18 +774,22 @@ class Actions
                             <br>
                             <h5 class="card-text"> Valor do pedido: R$ ' . $linha['request_total_value'] . '</h5>
                         </div>
-                        <a class="btn btn-outline-primary" href="visualizacaoPedido.php?id= '.$linha['id_request'].'">Conferir pedido</a>
+                        <a class="btn btn-outline-primary" href="visualizacaoPedido.php?id= ' . $linha['id_request'] . '">Conferir pedido</a>
                     </div>
                 </div>
             </div>
             ';
+
+                }
+            } else {
+                echo "<h2>Nenhum pedido foi feito</h2>";
+            }
+
+            $conexao->desconectar();
         }
-
-        $conexao->desconectar();
     }
-}
 
-public function buscarPedidoId($id)
+    public function buscarPedidoId($id)
     {
 
         $var = 0;
@@ -839,10 +846,10 @@ public function buscarPedidoId($id)
                 ';
 
                 $var = $linha['Total_Do_Pedido'];
-                
+
             }
-            echo "<h3> Valor Total: R$: ". $var. "</h3>";
-            
+            echo "<h3> Valor Total: R$: " . $var . "</h3>";
+
         }
 
 
@@ -892,13 +899,13 @@ public function buscarPedidoId($id)
 
             }
 
-            echo "Total pedido: ". $var;
+            echo "Total pedido: " . $var;
         }
 
 
         $conexao->desconectar();
 
-        
+
     }
 
     public function buscarProdutosClassCorda()
@@ -924,7 +931,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -955,7 +962,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -987,7 +994,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -1019,7 +1026,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -1051,7 +1058,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -1082,7 +1089,7 @@ public function buscarPedidoId($id)
                 
                 ';
 
-               
+
             }
         } else {
             echo "0 results";
@@ -1091,10 +1098,116 @@ public function buscarPedidoId($id)
         $conexao->desconectar();
     }
 
+    public function buscarProdutosClassPianos()
+    {
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
 
+        $sql = "SELECT id_product, product_img, product_name, product_unit_price FROM tb_product WHERE product_category LIKE 'T';";
+        $resultado = $conecta->query($sql);
+        if ($resultado->num_rows > 0) {
+            // saída dos dados
+            while ($linha = $resultado->fetch_assoc()) {
+                //echo '<h3>' . $linha['product_name'] . '</h3> <br>' . $linha['product_unit_price'] . '<br>'. "<img class='card-img-to' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />". '<br>';
+                echo '
+                <div class="card" style="width: 18rem;">
+                    ' . "<img class='card-img-to custom-image' src='imgs/" . $linha['product_img'] . "' alt='" . $linha['product_name'] . "' />" . '
+                    <div class="card-body"
+                        <h1 class="card-title"><strong>' . $linha['product_name'] . '</strong> </h1>
+                        <p class="card-text">' . $linha['product_unit_price'] . '</p>
+                        <a href="product.php?id=' . $linha['id_product'] . '"class="btn btn-primary">Ver detalhes</a>
+                    </div>
+                </div>
+                
+                ';
+
+
+            }
+        } else {
+            echo "0 results";
+        }
+
+        $conexao->desconectar();
+    }
+
+    public function buscarTotalPriceIdPedido($Id)
+    {
+
+        $teste = $_SESSION['usuario'];
+
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT
+        r.id_request AS id_do_pedido,
+        r.request_total_value AS Valor_Total_Do_Pedido,
+        p.product_name AS Nome_Do_Produto,
+        ir.quantity_itens_requested AS Quantidade_pedida_produto,
+        p.product_description AS Descrição_produto,
+        ir.id_itens_request AS ID_Do_Item,
+        p.id_product AS ID_Do_Produto,
+        p.product_unit_price AS Preço_Unitário,
+        ir.quantity_itens_requested * p.product_unit_price AS Valor_Do_Item,
+        SUM(ir.quantity_itens_requested * p.product_unit_price) OVER () AS Total_Do_Pedido
+    FROM
+        tb_request r
+    INNER JOIN
+        tb_itens_request ir ON r.id_request = ir.id_request
+    INNER JOIN
+        tb_product p ON ir.id_product = p.id_product
+    WHERE
+     r.id_request = $Id;";
+
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $var = $linha['Total_Do_Pedido'];
+
+            }
+
+            return $var;
+        }
+
+
+        $conexao->desconectar();
 
 
     }
+
+    public function buscarQuantidadeProduto($id)
+    {
+
+        $teste = $_SESSION['usuario'];
+        $var = 0;
+        $conexao = new ConexaoBD();
+        $conecta = $conexao->conectar();
+
+        $sql = "SELECT id_product, product_quantity_stock FROM tb_product where id_product = '$id'";
+
+        $resultado = $conecta->query($sql);
+
+        if ($resultado->num_rows > 0) {
+            while ($linha = $resultado->fetch_assoc()) {
+                (int) $var = $linha['product_quantity_stock'];
+
+            }
+
+
+        }
+
+
+
+        $conexao->desconectar();
+        return $var;
+
+
+    }
+
+
+
+
+}
 
 
 

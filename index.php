@@ -75,7 +75,7 @@
   <div class="container">
     <div class="d-flex justify-content-evenly flex-wrap">
       <div class="card" style="width: 18rem;">
-        <img src="imgs/cordas.webp" class="card-img-top" alt="...">
+        <img src="imgs/cordas3.jpeg" class="card-img-top" alt="...">
         <div class="card-body ">
           <h5 class="card-title">Cordas</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
@@ -84,7 +84,7 @@
         </div>
       </div>
       <div class="card" style="width: 18rem;">
-        <img src="imgs/sopro.jpeg" class="card-img-top" alt="...">
+        <img src="imgs/sopro2.jpg" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Sopro</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
@@ -93,18 +93,18 @@
         </div>
       </div>
       <div class="card" style="width: 18rem;">
-        <img src="imgs/elect.jpeg" class="card-img-top" alt="...">
+        <img src="imgs/eletronicos.jpeg" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Eletricos</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="pagEletrico.php" class="btn btn-primary">Go somewhere</a>
+          <a href="pagEletricos.php" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
       <div class="card" style="width: 18rem;">
-        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <img src="imgs/percussao.jpeg" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">Percussão Harmonia</h5>
+          <h5 class="card-title">Percussão</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
           <a href="pagPercussao.php" class="btn btn-primary">Pagina de Percussão</a>
@@ -120,16 +120,16 @@
         </div>
       </div>
       <div class="card" style="width: 18rem;">
-        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <img src="imgs/partitura.jpg" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Partituras E Livros</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="pagScore.php" class="btn btn-primary">Go somewhere</a>
+          <a href="pagScores.php" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
       <div class="card" style="width: 18rem;">
-        <img src="imgs/piano.jpeg" class="card-img-top" alt="...">
+        <img src="imgs/acessorios.jpg" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Acessorios</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
@@ -146,36 +146,17 @@
       <div class="col-lg-8 offset-lg-2">
         <h3 class="text-center">O que deseja saber sobre música?</h3>
         <div class="text-center ">
-        <p>Lorem ipsum dolor sit amet. 33 assumenda dolorem aut dolores quasi et esse odio qui doloremque neque et
-          blanditiis laudantium et cupiditate incidunt non nisi impedit. Est doloribus ratione ex consequatur voluptatem
-          a consequatur corporis ut praesentium fuga qui saepe natus vel consequuntur odit eum enim vitae. Quo galisum
-          rerum vel nihil voluptates vel molestias reprehenderit. Et dolores ipsam et culpa dolore non dignissimos
-          molestias. </p>
-        <p>Et similique quibusdam est earum voluptatem At alias veniam vel nostrum galisum sit ullam laboriosam. Eum
-          autem voluptas ad natus dolorum et recusandae dolorum et quae quisquam eos dolor delectus sit dolores repellat
-          non quia aperiam? </p>
-        <p>Ut quis culpa sed omnis ipsa eos nobis animi. Quo dolor voluptatem ex iste accusantium sit dignissimos
-          doloribus aut iure placeat. Et corrupti ipsum aut nisi assumenda et rerum doloribus. Ut libero fugit cum
-          dolores distinctio est nihil sint. </p>
-        <p>Et numquam praesentium sed modi nisi et voluptatem accusamus eum repellendus velit. Sit reprehenderit totam
-          et velit libero rem fugiat facere ut praesentium totam qui necessitatibus minima ut alias dolores id cumque
-          minus. </p>
-        <p>33 excepturi autem cum galisum atque non eius adipisci ut minus consectetur cum inventore possimus. Qui velit
-          nemo et quod provident et molestias exercitationem. </p>
-        <p>Ut mollitia molestiae eum ipsa laboriosam sed perferendis internos sed accusamus nostrum ab explicabo galisum
-          eos tempore dicta rem harum cumque. Et rerum suscipit vel deleniti ipsum et pariatur dolore et Quis iure vel
-          itaque enim et beatae necessitatibus ut recusandae amet. Sed quae necessitatibus eum autem explicabo a
-          aspernatur quia. Et laborum molestiae 33 commodi saepe aut cumque debitis est laboriosam internos eum
-          doloremque molestiae! </p>
-        <p>Non sunt aspernatur aut nisi omnis sed sunt corporis qui excepturi ducimus id quisquam quidem et autem dolor.
-          Aut excepturi enim est quisquam voluptas qui inventore animi ab nostrum neque eos corrupti alias. Ut dolorum
-          quam et cumque voluptates ut mollitia cumque et nihil voluptatem. </p>
-        <p>Cum omnis error et fuga quia aut aliquam voluptas aut error sint ut animi delectus. Sed sapiente corporis et
-          accusamus perspiciatis quo reiciendis laudantium qui odio tempora qui nihil rerum At voluptates voluptatibus
-          ut veritatis quos. </p>
-        <p>Ea illum fuga sit facere natus At maxime temporibus eos maxime sapiente quo nemo similique non illo nobis est
-          voluptate dolorum. Et voluptates voluptatibus est minus voluptas sit eveniet quis in voluptatem voluptatem aut
-          laboriosam nesciunt. </p>
+        <p>Benefícios para a saúde: Ouvir música tem sido associado a uma redução do estresse e da ansiedade. Estudos mostram que a música pode ajudar a diminuir a pressão arterial e aumentar a liberação de endorfinas, melhorando o humor e bem-estar.</p>
+                <p>Desenvolvimento cognitivo: A prática musical está ligada a melhorias na memória, concentração e habilidades motoras. Tocar um instrumento pode aprimorar significativamente diversas habilidades mentais.</p>
+                <p>Expressão emocional: A música é uma forma poderosa de expressar emoções complexas. Ela pode transmitir sentimentos profundos, sejam alegres, tristes ou reflexivos, conectando-se intimamente com as experiências humanas.</p>
+                <p>Cultura e sociedade: A música desempenha um papel vital em várias culturas ao redor do mundo. Ela é utilizada em celebrações, rituais e expressões artísticas, sendo um componente fundamental na identidade cultural de diferentes povos.</p>
+                <p>Aproveitamento do tempo: Aprender a tocar um instrumento musical ou explorar diferentes gêneros musicais é uma maneira enriquecedora de passar o tempo. Além de entretenimento, a música pode estimular a criatividade e proporcionar um hobby gratificante.</p>
+                <p>Terapia sonora: A musicoterapia é utilizada como um método terapêutico para ajudar na recuperação de pacientes com condições físicas e mentais. Ela pode auxiliar na redução da dor, melhoria do sono e na reabilitação após lesões.</p>
+                <p>Diversidade cultural: A diversidade na música é imensa, com gêneros, instrumentos e estilos musicais provenientes de diferentes partes do mundo. Isso reflete a riqueza e complexidade das culturas humanas.</p>
+                <p>Efeitos no cérebro: Ouvir música ativa áreas do cérebro relacionadas à recompensa, memória e emoção. Ela pode estimular a liberação de dopamina, neurotransmissor associado ao prazer e motivação.</p>
+                <p>Música na aprendizagem: Estudos sugerem que a exposição à música desde a infância pode melhorar o desempenho acadêmico, especialmente em áreas como matemática e linguagem, ao aprimorar habilidades de raciocínio.</p>
+                <p>Impacto social: A música tem sido usada como ferramenta para promover mudanças sociais e conscientização sobre questões importantes. Ela pode transmitir mensagens poderosas e unir comunidades para causas comuns.</p>
+                <p>Conexões universais: Independentemente da língua ou cultura, a música é uma linguagem universal. Ela pode criar laços entre pessoas de diferentes origens, conectando-se através de emoções e experiências compartilhadas.</p>
           </div>
       </div>
     </div>
@@ -186,7 +167,7 @@
   </div>
 
   <div class="footer">
-    &copy; 2023 Lojinha de musica. Todos os direitos reservados.
+    &copy; 2023 Maestro Academy. Todos os direitos reservados.
   </div>
 
 

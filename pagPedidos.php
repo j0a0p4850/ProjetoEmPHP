@@ -36,9 +36,11 @@
                             <li><a class="dropdown-item" href="pagPercussao.php">Instrumentos de Percussão</a></li>
                             <li><a class="dropdown-item" href="pagSopro.php">Instrumento de Sopro</a></li>
                             <li><a class="dropdown-item" href="pagEletricos.php">Instrumentos de Eletrico</a></li>
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            <li><a class="dropdown-item" href="pagAcessorios.php">Acessorios</a></li>
                             <li><a class="dropdown-item" href="pagScores.php">Partituras e Livros</a></li>
                         </ul>
                     </li>
@@ -54,19 +56,19 @@
         </div>
     </nav>
 
-    
-            <?php
+
+    <?php
 
 
-            include "Main.php";
-            session_start();
-            $usuario = new Actions();
-            $usuario->pegarPedidos();
+    include "Main.php";
+    session_start();
+    $usuario = new Actions();
+    $usuario->pegarPedidos();
 
 
 
-            ?>
-       
+    ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
